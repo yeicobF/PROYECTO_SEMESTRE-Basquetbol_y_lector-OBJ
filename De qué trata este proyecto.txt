@@ -1,0 +1,33 @@
+
+ - PROYECTO SEMESTRAL - GRAFICACIÓN POR COMPUTADORA
+ - 5to SEMESTRE [2020-2021/I]
+ - Francisco Jacob Flores Rodríguez
+
+- Viernes, 2 de octubre de 2020 - 7:44PM
+
+    En este proyecto trabajaremos con objetos hechos por computadora. Empezamos
+desde que comenzó el semestre y lo trabajaremos durante estos meses que vienen
+hasta terminar el semestre. * EL PROYECTO CORRERÁ EN LA MÁQUINA VIRTUAL DE
+XUBUNTU, AHÍ TENEMOS LOS COMPILADORES PARA C++, QUE ES EL LENGUAJE EN EL CUAL
+VAMOS A PROGRAMAR. *
+
+    El proyecto lo empezamos en clase a inicios del semestre cuando empezamos
+a trabajar con el lector de objetos. Lo comenzamos a construir poco a poco,
+y es la base de todo el proyecto porque es lo que nos permitirá leer y mostrar
+el trabajo que hayamos hecho en el semestre.
+
+    Las estructuras para el lector de archivos OBJ las entregué el Viernes,
+11 de septiembre. Estas son Face, Edge, y Vertex, y sirven para almacenar estos
+datos en memoria.
+
+    Yo elegí el hacer un balón de basquetbol y su trayectoria, la propuesta
+la entregué el Lunes, 21 de septiembre. Hay varios requisitos con los cuales
+cumplir.
+
+    El siguiente avance se entrega el Domingo, 4 de octubre, y en ese hay que
+terminar TODO el lector de objetos con los requisitos que pondré en su
+respectivo documento.
+
+    -> Crearé un repositorio para ir subiendo el avance que vaya haciendo.
+
+---- HASTA AQUÍ LO QUE ESCRIBÍ EL Viernes, 4 de octubre de 2020. ---
