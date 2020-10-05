@@ -18,6 +18,18 @@ Vertex::Vertex(float xi, float yi, float zi){
 	y = yi;
 	z = zi;
 }
+
+/* No debo redeclarar que es estático el método.
+ https://stackoverflow.com/questions/31305717/member-function-with-static-linkage*/
+/* static */Vertex Vertex::saveVertex(vector <string> values){
+    Vertex v;
+    float x = stof(values[0]); // std::stof(str); No pongo std por el namespace
+    float y = stof(values[1]);
+    float z = stof(values[2]);
+    v = Vertex(x, y, z);
+    return v;
+}
+
 // Método para imprimir las coordenadas del vértice.
 void Vertex::imprimir(){
 	cout<<"\n -> x = "<< x <<", y = "<< y <<", z = "<< z <<endl;

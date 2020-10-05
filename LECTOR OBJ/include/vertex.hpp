@@ -4,6 +4,9 @@
 /* - En este .hpp solo podemos tener la definición de la clase,
 no la implementación.*/
 
+#include <vector>
+#include <string>
+
 /* Clase que representa los vértices o vertex.*/
 class Vertex{
 	private: //Lo que le sigue es privado hasta donde empieza el public.
@@ -17,8 +20,12 @@ class Vertex{
 		Vertex();
 		// Constructor de vértice que recibe coordenadas.
 		Vertex(float xi, float yi, float zi);
-		// Método para imprimir las coordenadas del vértice.
-		void imprimir();
+		// Método estático para guardar valores de vértice y regresarlos.
+        /* https://stackoverflow.com/questions/31305717/member-function-with-static-linkage*/
+        static Vertex saveVertex(std::vector <std::string> values);
+        void imprimir();
 };
+
+
 
 #endif

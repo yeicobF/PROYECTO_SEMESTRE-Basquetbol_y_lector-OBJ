@@ -43,22 +43,37 @@ void Object::saveObject(){
         /* En la conidición que sigue comparo la subcadena de los primeros
          3 caracteres de la linea extraída para ver si son iguales a los
          del vértice en el archivo OBJ.*/
-        if(linea.substr(0, 3).compare("v  ") == 0){
+         // Es el mismo delimitador para todos.
+
+        if(isGeometricVertex(linea)){
             values = splitString(0, "  ", linea, values); //Mandar pos = 0.
             imprimeValores(values);
         /* Fuente de la conversión:
     https://www.programiz.com/cpp-programming/string-float-conversion#:~:text=help%20of%20examples.-,C%2B%2B%20string%20to%20float%20and%20double%20Conversion,convert%20string%20to%20long%20double%20.*/
-            float x = stof(values[0]); // std::stof(str); No pongo std por el namespace
-            float y = stof(values[1]);
-            float z = stof(values[2]);
-            v = Vertex(x, y, z);
-            vertex_list.push_back(v);
+
+            vertex_list.push_back(Vertex::saveVertex(values));
+            values.clear(); // Limpia el vector. Elimina todos sus elementos.
         }
-        values.clear(); // Limpia el vector. Elimina todos sus elementos.
+        //
+        if(isFace(linea)){
+            values = splitString(0, "  ", linea, values); //Mandar pos = 0.
+            
+        }
+
 	}
     // imprimeVertex(vertex_list); //Imprime los vértices
 	OBJFile.close(); // Cerrar el archivo.
 	// return 0;
+}
+
+// Método que devuelve true si es un vértice geométrico.
+bool Object::isGeometricVertex(string str){
+    return str.substr(0, 3).compare("v  ") == 0;
+}
+
+// Método que devuelve true si encuentra la "f" de cara.
+bool Object::isFace(string str){
+    return str.substr(0, 1).compare("f") == 0;
 }
 
 void Object::printObject(){
