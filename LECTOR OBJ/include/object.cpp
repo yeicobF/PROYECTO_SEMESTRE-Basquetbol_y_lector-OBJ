@@ -25,7 +25,7 @@ void Object::saveObject(){
     Edge e;
     vector <string> edge_list;
     vector <Vertex> vertex_list;
-    vector <string> valores;
+    vector <string> values;
     string linea; //El delimitador de vértices
     // string delimitador = "  "; //No lo necesito porque lo paso como parámetro.
     // size_t pos = 0; //El inicio de posición para std::string::find()
@@ -33,10 +33,10 @@ void Object::saveObject(){
     // string archivo = "";
     // cout << "Nombre del archivo: " << endl;
     // cin << archivo;
-	ifstream archivoOBJ(OBJFileName);
+	ifstream OBJFile(OBJFileName);
     //cout << "\nHola: Compilación complida\n" << endl;
     // 2.- Recorrer archivo línea a línea
-	while(getline(archivoOBJ, linea)){
+	while(getline(OBJFile, linea)){
         // posValores = 0; //La posición de dicho vector se reinicia.
         // cout << "Linea : " << numLinea << endl;
         // numLinea++;
@@ -44,20 +44,20 @@ void Object::saveObject(){
          3 caracteres de la linea extraída para ver si son iguales a los
          del vértice en el archivo OBJ.*/
         if(linea.substr(0, 3).compare("v  ") == 0){
-            valores = splitString(0, "  ", linea, valores); //Mandar pos = 0.
-        //imprimeValores(valores);
+            values = splitString(0, "  ", linea, values); //Mandar pos = 0.
+            imprimeValores(values);
         /* Fuente de la conversión:
     https://www.programiz.com/cpp-programming/string-float-conversion#:~:text=help%20of%20examples.-,C%2B%2B%20string%20to%20float%20and%20double%20Conversion,convert%20string%20to%20long%20double%20.*/
-            float x = stof(valores[0]); // std::stof(str); No pongo std por el namespace
-            float y = stof(valores[1]);
-            float z = stof(valores[2]);
+            float x = stof(values[0]); // std::stof(str); No pongo std por el namespace
+            float y = stof(values[1]);
+            float z = stof(values[2]);
             v = Vertex(x, y, z);
             vertex_list.push_back(v);
         }
-        valores.clear(); // Limpia el vector. Elimina todos sus elementos.
+        values.clear(); // Limpia el vector. Elimina todos sus elementos.
 	}
     // imprimeVertex(vertex_list); //Imprime los vértices
-	archivoOBJ.close(); // Cerrar el archivo.
+	OBJFile.close(); // Cerrar el archivo.
 	// return 0;
 }
 
@@ -76,7 +76,7 @@ void Object::imprimeValores(vector <string> v){
 /* Función que recorrerá una línea dependiendo de los parámetros dados.
  Regresará un vector que guardará como cadena los valores para así acceder
  a ellos y utilizarlos conforme los vayamos a necesitar.*/
-vector <string> Object::splitString(size_t pos, string delimitador, string linea, vector <string> valores){
+vector <string> Object::splitString(size_t pos, string delimitador, string linea, vector <string> values){
     string token;
     /* Ciclo que asigna la posición como el índice en donde se encuentra el
         delimitador en la cadena actual. Este avanza hasta que ya no haya nada.*/
@@ -85,7 +85,7 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
         token = linea.substr(0, pos);
         // Agregar el elemento encontrado al vector si no es la v (Luego lo haré general).
         if(token.compare("v") != 0) // Si es igual a v no se agrega, si es diferente, sí se agrega.
-            valores.push_back(token);
+            values.push_back(token);
         // cout << token << endl;
         // Eliminar el último elemento que agregamos al vector de la cadena.
         linea.erase(0, pos + delimitador.length());
@@ -94,6 +94,6 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     /* Como lo último no se guía por delimitadores ya que no hay espacios
     al final, se agrega lo restante de la línea. Esto recordando que al
     agregar un elemento al vector se eliminaba de la cadena inicial.*/
-    valores.push_back(linea);
-    return valores;
+    values.push_back(linea);
+    return values;
 }

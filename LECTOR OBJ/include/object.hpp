@@ -22,7 +22,7 @@ class Object{
         std::string objectName;
 
         void imprimeValores(std::vector <std::string> v);
-        std::vector <std::string> splitString(size_t pos, std::string delimitador, std::string linea, std::vector <std::string> valores);
+        std::vector <std::string> splitString(size_t pos, std::string delimitador, std::string linea, std::vector <std::string> values);
     public:
         Object(std::string OBJFileName);
         // Método que guardará todos los objetos.
