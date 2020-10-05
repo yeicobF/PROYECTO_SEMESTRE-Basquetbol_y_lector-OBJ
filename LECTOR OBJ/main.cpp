@@ -8,7 +8,8 @@ using namespace std;
 
 /*
  - Francisco Jacob Flores Rodríguez
- - Lunes, 14 - 15, 16, Jueves, 17 de septiembre de 2020
+ - Lunes, 14 - 15, 16, Jueves, 17 de septiembre del 2020
+ - Domingo, 4 - Lunes, 5 de octubre del 2020
  - Graficación por computadora, 1er parcial
  - IMPLEMENTACIÓN DE ARCHIVOS OBJ EN C++.
 
@@ -22,9 +23,9 @@ using namespace std;
  */
 
 int main(){
-    // Utilizar el constructr con el nombre del archivo.
+    // Utilizar el constructor con el nombre del archivo.
     Object obj = Object("models/cube.obj");
     obj.saveObject();
-    std::cout << "\n Terminó de guardar el objeto.\n";
+    // std::cout << "\n Terminó de guardar el objeto.\n";
     obj.printObject();
 }

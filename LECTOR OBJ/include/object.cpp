@@ -1,7 +1,5 @@
 #include "object.hpp"
 #include <iostream>
-// #include <string>
-// #include <vector>
 #include <fstream> // Para la lectura y manejo de archivos.
 
 using namespace std;
@@ -77,6 +75,44 @@ void Object::saveObject(){
 	// return 0;
 }
 
+/* Método que imprime al objeto:
+    - NOMBRE
+    - NÚMERO DE CARA
+    - ARISTAS QUE CONFORMAN LA CARA
+    - VÉRTICES QUE CONFORMAN A LAS ARISTAS
+    - NÚMERO DE CARAS TOTALES*/
+void Object::printObject(){
+    unsigned int i;
+    cout << "\n\t-----------------------" << endl;
+    cout << "\n\t -> NOMBRE DEL OBJETO: " << objectName << endl;
+    cout << "\n\t-----------------------" << endl;
+    // Impresión de cada cara
+    for(i = 0; i < face_list.size(); i++){
+        cout << "\n - CARA " << (i + 1) << endl;
+        // Impresión de cada cara.
+        face_list[i].printFace();
+        // Poner un separador para identificar cada cara con mayor facilidad.
+        cout << "------------------------------\n" << endl;
+    }
+    cout << " - ESTE OBJETO TIENE " << i << " CARAS -\n" << endl;
+}
+
+// Método que verifica si la línea actual lee un nombre.
+/* El nombre se representa por una "o", aunque también puede ser con la "g",
+    que también denota un grupo.
+    - Recibe notEnterValues por referencia para que guarde la letra que
+        corresponde al nombre del objeto y así no incluirla en el nombre del
+        objeto.*/
+bool Object::isName(string str, string* notEnterValues){
+    // Si el primer caracter de la cadena es "o" o "g", devuelve true.
+    // Guardar la letra en cadena para no incluirla en la cadena del nombre.
+    if(str.substr(0, 1).compare("o") == 0)
+        *notEnterValues = "o";
+    if(str.substr(0, 1).compare("g") == 0)
+        *notEnterValues = "g";
+    return str.substr(0, 1).compare("o") == 0 || str.substr(0, 1).compare("g") == 0;
+}
+
 // Método que guardará el nombre del objeto.
 void Object::saveObjectName(vector <string> values){
     // Este ciclo por si guardó más de un valor el splitString se vaya concatenando.
@@ -109,52 +145,6 @@ void Object::nameNotFound(string OBJFileName){
     }
 }
 
-// Método que verifica si la línea actual lee un nombre.
-/* El nombre se representa por una "o", aunque también puede ser con la "g",
-    que también denota un grupo.
-    - Recibe notEnterValues por referencia para que guarde la letra que
-        corresponde al nombre del objeto y así no incluirla en el nombre del
-        objeto.*/
-bool Object::isName(string str, string* notEnterValues){
-    // Si el primer caracter de la cadena es "o" o "g", devuelve true.
-    // Guardar la letra en cadena para no incluirla en la cadena del nombre.
-    if(str.substr(0, 1).compare("o") == 0)
-        *notEnterValues = "o";
-    if(str.substr(0, 1).compare("g") == 0)
-        *notEnterValues = "g";
-    return str.substr(0, 1).compare("o") == 0 || str.substr(0, 1).compare("g") == 0;
-}
-
-/* Método que imprime al objeto:
-    - NOMBRE
-    - NÚMERO DE CARA
-    - ARISTAS QUE CONFORMAN LA CARA
-    - VÉRTICES QUE CONFORMAN A LAS ARISTAS
-    - NÚMERO DE CARAS TOTALES*/
-void Object::printObject(){
-    unsigned int i;
-    cout << "\n\t-----------------------" << endl;
-    cout << "\n\t -> NOMBRE DEL OBJETO: " << objectName << endl;
-    cout << "\n\t-----------------------" << endl;
-    // Impresión de cada cara
-    for(i = 0; i < face_list.size(); i++){
-        cout << "\n - CARA " << (i + 1) << endl;
-        // Impresión de cada cara.
-        face_list[i].printFace();
-        // Poner un separador para identificar cada cara con mayor facilidad.
-        cout << "------------------------------\n" << endl;
-    }
-    cout << " - ESTE OBJETO TIENE " << i << " CARAS -\n" << endl;
-}
-
-/* Método que imprime los valores guardados en el vector de cadena.*/
-void Object::imprimeValores(vector <string> v){
-    vector<string>::const_iterator i;
-    cout << "\n - Imprimir vector: " << endl;
-    for(i = v.begin(); i != v.end(); i++)
-        cout << *i << ", ";
-    cout << "\n" << endl;
-}
 /* Función que recorrerá una línea dependiendo de los parámetros dados.
  Regresará un vector que guardará como cadena los valores para así acceder
  a ellos y utilizarlos conforme los vayamos a necesitar.*/
