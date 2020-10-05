@@ -2,6 +2,7 @@
 /* Estos include son para las clases que separamos en librerías
 para tener el código más limpio, y ordenado.*/
 #include "include/object.hpp"
+#include <iostream>
 
 using namespace std;
 
@@ -24,5 +25,6 @@ int main(){
     // Utilizar el constructr con el nombre del archivo.
     Object obj = Object("models/cube.obj");
     obj.saveObject();
+    std::cout << "\n Terminó de guardar el objeto.\n";
     obj.printObject();
 }

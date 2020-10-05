@@ -60,10 +60,9 @@ void Object::saveObject(){
             // Eliminamos el primer elemento, el cual es la f.
             //cout << "\n\n ENTRÓ AL isFace()\n\n" << endl;
             // Aquí trabajaré con los vértices y aristas.
-            for(int i = 0; i < values.size(); i++){
+            for(unsigned int i = 0; i < values.size(); i++)
                 // Mandamos el índice i+1 porque el 0 es la f de face_list.
                 edge_list.push_back(Edge::saveEdge(vertex_list, values, i));
-            }
             // Meter la lista de aristas a la cara actual.
             face_list.push_back(edge_list);
             // Reiniciar la lista de aristas.
@@ -77,7 +76,7 @@ void Object::saveObject(){
 }
 
 void Object::printObject(){
-    int i;
+    unsigned int i;
     // Código para impresión.
     // Impresión de cada cara
     for(i = 0; i < face_list.size(); i++){
@@ -123,8 +122,8 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     al final, se agrega lo restante de la línea. Esto recordando que al
     agregar un elemento al vector se eliminaba de la cadena inicial.*/
     values.push_back(linea);
-    // cout << "\n\n" << notEnterValues << endl;
-    // for(int i = 0; i < values.size(); i++)
-    //     cout << values[i] << ", " << endl;
+    cout << "\n\n" << notEnterValues << endl;
+    for(unsigned int i = 0; i < values.size(); i++)
+        cout << values[i] << ", " << endl;
     return values;
 }

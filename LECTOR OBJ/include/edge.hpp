@@ -15,7 +15,7 @@ class Edge{
 		// Constructor de aristas con sus vértices correspondientes.
         Edge();
         Edge(Vertex va, Vertex vb);
-        static Edge saveEdge(std::vector <Vertex> v_list, std::vector <std::string> values, int actualIndex);
+        static Edge saveEdge(std::vector <Vertex> v_list, std::vector <std::string> values, unsigned int actualIndex);
         void printEdge();
         // Método para establecer los números de los vértices del arista.
         void setVertexNums(int v1, int v2);

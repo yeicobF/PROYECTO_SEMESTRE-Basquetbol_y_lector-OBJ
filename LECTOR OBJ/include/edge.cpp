@@ -11,7 +11,7 @@ Edge::Edge(Vertex va, Vertex vb){
 	vf = vb;
 }
 
-/* static */ Edge Edge::saveEdge(vector <Vertex> v_list, vector <string> values, int actualIndex){
+/* static */ Edge Edge::saveEdge(vector <Vertex> v_list, vector <string> values, unsigned int actualIndex){
     Edge e;
     // cout << "\n - EDGE VERTICES: " << endl;
     // for(int i = 0; i < values.size(); i++)
@@ -21,16 +21,17 @@ Edge::Edge(Vertex va, Vertex vb){
             stoi(values[indiceActual])*/
     // Si se llegó al índice máximo hacer arista con primer vértice.
     //cout << values[actualIndex].substr(0, 1) << stoi(values[actualIndex].substr(0, 1));
-    int index1 = stoi(values[actualIndex].substr(0, 1)), index2 = 0;
+    int indexV1 = stoi(values[actualIndex].substr(0, 1)), indexV2 = 0;
     if(actualIndex == (values.size() - 1)){
-        index2 = stoi(values[0].substr(0, 1));
-        e = Edge(v_list[index1], v_list[index2]);
+        // Como llegamos al último valor, relacionar con el primer vértice.
+        indexV2 = stoi(values[0].substr(0, 1));
+        e = Edge(v_list[indexV1], v_list[indexV2]);
     }
     else{ // Si está dentro del límite, asignar con siguiente vértice.
-        index2 = stoi(values[actualIndex + 1].substr(0, 1));
-        e = Edge(v_list[index1], v_list[index2]);
+        indexV2 = stoi(values[actualIndex + 1].substr(0, 1));
+        e = Edge(v_list[indexV1], v_list[indexV2]);
     }
-    e.setVertexNums(index1, index2);
+    e.setVertexNums(indexV1, indexV2);
     return e;
 }
 
