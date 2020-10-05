@@ -30,7 +30,12 @@ Vertex::Vertex(float xi, float yi, float zi){
     return v;
 }
 
+// Método que devuelve true si es un vértice geométrico.
+bool Vertex::isGeometricVertex(string str){
+    return str.substr(0, 3).compare("v  ") == 0;
+}
+
 // Método para imprimir las coordenadas del vértice.
-void Vertex::imprimir(){
+void Vertex::printVertex(){
 	cout<<"\n -> x = "<< x <<", y = "<< y <<", z = "<< z <<endl;
 }

@@ -12,8 +12,9 @@ class Face{
         std::vector <Edge> edge_list;
 	public:
 		Face(std::vector <Edge> edge_list);
+        static bool isFace(std::string str);
         // Método que imprime las carcas con sus aristas y vértices.
-        void imprimir();
+        void printFace();
 };
 
 #endif

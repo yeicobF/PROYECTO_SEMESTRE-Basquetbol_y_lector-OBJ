@@ -23,8 +23,7 @@ class Object{
 
         void imprimeValores(std::vector <std::string> v);
         std::vector <std::string> splitString(size_t pos, std::string delimitador, std::string linea, std::vector <std::string> values);
-        bool isGeometricVertex(std::string str);
-        bool isFace(std::string str);
+
     public:
         Object(std::string OBJFileName);
         // Método que guardará todos los objetos.

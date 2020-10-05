@@ -23,7 +23,6 @@ void Object::saveObject(){
 		5.- 		Crear objeto Face*/
     Vertex v;
     Edge e;
-    vector <Face> face_list;
     vector <Edge> edge_list;
     vector <Edge> edge_list_aux;
     vector <Vertex> vertex_list;
@@ -47,9 +46,9 @@ void Object::saveObject(){
          del vértice en el archivo OBJ.*/
          // Es el mismo delimitador para todos.
 
-        if(isGeometricVertex(linea)){
+        if(Vertex::isGeometricVertex(linea)){
             values = splitString(0, "  ", linea, values); //Mandar pos = 0.
-            imprimeValores(values);
+            //imprimeValores(values);
         /* Fuente de la conversión:
     https://www.programiz.com/cpp-programming/string-float-conversion#:~:text=help%20of%20examples.-,C%2B%2B%20string%20to%20float%20and%20double%20Conversion,convert%20string%20to%20long%20double%20.*/
 
@@ -57,11 +56,15 @@ void Object::saveObject(){
             values.clear(); // Limpia el vector. Elimina todos sus elementos.
         }
         //
-        if(isFace(linea)){
+        if(Face::isFace(linea)){
             values = splitString(0, "  ", linea, values); //Mandar pos = 0.
+            // Eliminamos el primer elemento, el cual es la f.
+            cout << "\n\n ENTRÓ AL isFace()\n\n"
             // Aquí trabajaré con los vértices y aristas.
-            for(int i = 0; i < values.size(); i++)
+            for(int i = 0; i < values.size(); i++){
+                // Mandamos el índice i+1 porque el 0 es la f de face_list.
                 edge_list.push_back(Edge::saveEdge(vertex_list, values, i));
+            }
             edge_list_aux = edge_list;
         }
         // Meter la lista de aristas a la cara actual.
@@ -74,18 +77,21 @@ void Object::saveObject(){
 	// return 0;
 }
 
-// Método que devuelve true si es un vértice geométrico.
-bool Object::isGeometricVertex(string str){
-    return str.substr(0, 3).compare("v  ") == 0;
-}
-
-// Método que devuelve true si encuentra la "f" de cara.
-bool Object::isFace(string str){
-    return str.substr(0, 1).compare("f") == 0;
-}
-
 void Object::printObject(){
+    int i;
     // Código para impresión.
+    // Impresión de cada cara
+    for(i = 0; i < face_list.size(); i++){
+        cout << "\n - CARA " << (i + 1) << endl;
+        // Impresión de cada arista.
+        face_list[i].printFace();
+        // for(int j = 0; i < face_list[i].size(); j++){
+        //     cout << "\n\t - ARISTA " << j << endl;
+        //     face_list[i].printEdge();
+        // }
+        cout << endl;
+    }
+    cout << " - ESTE OBJETO TIENE " << i << " CARAS -" << endl;
 }
 
 /* Método que imprime los valores guardados en el vector de cadena.*/
@@ -107,7 +113,7 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
         // Se guarda la subcadena de 0 hasta pos.
         token = linea.substr(0, pos);
         // Agregar el elemento encontrado al vector si no es la v (Luego lo haré general).
-        if(token.compare("v") != 0) // Si es igual a v no se agrega, si es diferente, sí se agrega.
+        if(token.compare("v") != 0 || token.compare("f") != 0) // Si es igual a v o f no se agrega, si es diferente, sí se agrega.
             values.push_back(token);
         // cout << token << endl;
         // Eliminar el último elemento que agregamos al vector de la cadena.

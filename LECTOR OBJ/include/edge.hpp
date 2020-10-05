@@ -15,7 +15,7 @@ class Edge{
         Edge();
         Edge(Vertex va, Vertex vb);
         static Edge saveEdge(std::vector <Vertex> v_list, std::vector <std::string> values, int actualIndex);
-        void imprimir();
+        void printEdge();
 };
 
 #endif

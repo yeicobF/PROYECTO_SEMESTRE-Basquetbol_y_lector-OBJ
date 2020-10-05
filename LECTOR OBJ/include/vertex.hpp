@@ -23,7 +23,8 @@ class Vertex{
 		// Método estático para guardar valores de vértice y regresarlos.
         /* https://stackoverflow.com/questions/31305717/member-function-with-static-linkage*/
         static Vertex saveVertex(std::vector <std::string> values);
-        void imprimir();
+        static bool isGeometricVertex(std::string str);
+        void printVertex();
 };
 
 

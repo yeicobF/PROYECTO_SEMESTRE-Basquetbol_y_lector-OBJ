@@ -24,4 +24,5 @@ int main(){
     // Utilizar el constructr con el nombre del archivo.
     Object obj = Object("models/cube.obj");
     obj.saveObject();
+    obj.printObject();
 }
