@@ -154,13 +154,18 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     /* Ciclo que asigna la posición como el índice en donde se encuentra el
         delimitador en la cadena actual. Este avanza hasta que ya no haya nada.*/
     while ((pos = linea.find(delimitador)) != std::string::npos) {
-        if(linea.substr(0, 1).compare(" ") == 0){
-            pos = linea.find(delimitador);
-            linea.erase(0, pos + delimitador.length());
-            continue;
-        }
+        // if(linea.substr(0, 1).compare(" ") == 0 || linea.compare("") == 0){
+        //     // Encontrar un elemento sin el delimitador.
+        //     //pos = linea.find(delimitador);
+        //     linea.erase(0, pos + delimitador.length());
+        //     continue;
+        // }
         // Se guarda la subcadena de 0 hasta pos.
         token = linea.substr(0, pos);
+        // if(token.compare(" ") == 0 || token.compare("") == 0 || token.empty()){
+        //     linea.erase(0, pos + delimitador.length());
+        //     continue;
+        // }
         //if(token.compare(" ") == 0) continue;
         // Agregar el elemento encontrado al vector si no es la v (Luego lo haré general).
         // Si es igual a notEnterValues no se agrega, si es diferente, sí se agrega.
@@ -179,9 +184,13 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     /* FUENTE: Efficient way to check if std::string has only spaces
         https://stackoverflow.com/questions/6444842/efficient-way-to-check-if-stdstring-has-only-spaces
         */
-    if(linea.compare("") != 0 || linea.find_first_not_of(' ') != std::string::npos)
+    if(linea.compare("") != 0 || !linea.empty() || linea.substr(0, 1).compare(" ") != 0)
         values.push_back(linea);
     // values = eraseEmptyValues(values, " ");
+    unsigned int i;
+    for(i = 0; i < values.size(); i++)
+        if(values[i].compare("") == 0 || values[i].empty())
+            values.erase(values.begin() + i);
     cout << "\n\n" << notEnterValues << endl;
     for(unsigned int i = 0; i < values.size(); i++)
         cout << values[i] << ", " << endl;
