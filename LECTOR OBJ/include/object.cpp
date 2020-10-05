@@ -179,9 +179,9 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     if(linea.compare("") != 0)
         values.push_back(linea);
     // values = eraseEmptyValues(values, " ");
-    cout << "\n\n" << notEnterValues << endl;
-    for(unsigned int i = 0; i < values.size(); i++)
-        cout << values[i] << ", " << endl;
+    // cout << "\n\n" << notEnterValues << endl;
+    // for(unsigned int i = 0; i < values.size(); i++)
+    //     cout << values[i] << ", " << endl;
     return values;
 }
 
