@@ -64,11 +64,11 @@ void Object::saveObject(){
                 // Mandamos el índice i+1 porque el 0 es la f de face_list.
                 edge_list.push_back(Edge::saveEdge(vertex_list, values, i));
             }
+            // Meter la lista de aristas a la cara actual.
+            face_list.push_back(edge_list);
+            // Reiniciar la lista de aristas.
+            edge_list.clear();
         }
-        // Meter la lista de aristas a la cara actual.
-        face_list.push_back(edge_list);
-        // Reiniciar la lista de aristas.
-        edge_list.clear();
         values.clear(); // Limpia el vector. Elimina todos sus elementos.
 	}
     // imprimeVertex(vertex_list); //Imprime los vértices
@@ -80,17 +80,16 @@ void Object::printObject(){
     int i;
     // Código para impresión.
     // Impresión de cada cara
-    //for(i = 0; i < face_list.size(); i++){
-        //cout << "\n - CARA " << (i + 1) << endl;
+    for(i = 0; i < face_list.size(); i++){
+        cout << "\n - CARA " << (i + 1) << endl;
         // Impresión de cada arista.
         face_list[0].printFace();
         // for(int j = 0; i < face_list[i].size(); j++){
         //     cout << "\n\t - ARISTA " << j << endl;
         //     face_list[i].printEdge();
-        // }
         cout << endl;
-    //}
-    //cout << " - ESTE OBJETO TIENE " << i << " CARAS -" << endl;
+        }
+    cout << " - ESTE OBJETO TIENE " << i << " CARAS -" << endl;
 }
 
 /* Método que imprime los valores guardados en el vector de cadena.*/
@@ -124,8 +123,8 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     al final, se agrega lo restante de la línea. Esto recordando que al
     agregar un elemento al vector se eliminaba de la cadena inicial.*/
     values.push_back(linea);
-    cout << "\n\n" << notEnterValues << endl;
-    for(int i = 0; i < values.size(); i++)
-        cout << values[i] << ", " << endl;
+    // cout << "\n\n" << notEnterValues << endl;
+    // for(int i = 0; i < values.size(); i++)
+    //     cout << values[i] << ", " << endl;
     return values;
 }
