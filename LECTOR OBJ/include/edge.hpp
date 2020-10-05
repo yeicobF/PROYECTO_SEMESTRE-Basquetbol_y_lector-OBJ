@@ -2,6 +2,8 @@
 #define EDGE_HPP
 
 #include "vertex.hpp"
+#include <vector>
+#include <string>
 //class Vertex;
 /* Clase que representa los aristas o edges.*/
 class Edge{
@@ -12,7 +14,8 @@ class Edge{
 		// Constructor de aristas con sus vértices correspondientes.
         Edge();
         Edge(Vertex va, Vertex vb);
-		void imprimir();
+        static Edge saveEdge(std::vector <Vertex> v_list, std::vector <std::string> values, int actualIndex);
+        void imprimir();
 };
 
 #endif

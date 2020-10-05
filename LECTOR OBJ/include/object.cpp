@@ -23,7 +23,9 @@ void Object::saveObject(){
 		5.- 		Crear objeto Face*/
     Vertex v;
     Edge e;
-    vector <string> edge_list;
+    vector <Face> face_list;
+    vector <Edge> edge_list;
+    vector <Edge> edge_list_aux;
     vector <Vertex> vertex_list;
     vector <string> values;
     string linea; //El delimitador de vértices
@@ -57,9 +59,15 @@ void Object::saveObject(){
         //
         if(isFace(linea)){
             values = splitString(0, "  ", linea, values); //Mandar pos = 0.
-            
+            // Aquí trabajaré con los vértices y aristas.
+            for(int i = 0; i < values.size(); i++)
+                edge_list.push_back(Edge::saveEdge(vertex_list, values, i));
+            edge_list_aux = edge_list;
         }
-
+        // Meter la lista de aristas a la cara actual.
+        face_list.push_back(edge_list);
+        // Reiniciar la lista de aristas.
+        edge_list.clear();
 	}
     // imprimeVertex(vertex_list); //Imprime los vértices
 	OBJFile.close(); // Cerrar el archivo.
