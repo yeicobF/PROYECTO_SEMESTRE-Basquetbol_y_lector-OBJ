@@ -82,12 +82,12 @@ void Object::printObject(){
     for(i = 0; i < face_list.size(); i++){
         cout << "\n - CARA " << (i + 1) << endl;
         // Impresión de cada arista.
-        face_list[0].printFace();
+        face_list[i].printFace();
         // for(int j = 0; i < face_list[i].size(); j++){
         //     cout << "\n\t - ARISTA " << j << endl;
         //     face_list[i].printEdge();
         cout << endl;
-        }
+    }
     cout << " - ESTE OBJETO TIENE " << i << " CARAS -" << endl;
 }
 
@@ -122,8 +122,8 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     al final, se agrega lo restante de la línea. Esto recordando que al
     agregar un elemento al vector se eliminaba de la cadena inicial.*/
     values.push_back(linea);
-    cout << "\n\n" << notEnterValues << endl;
-    for(unsigned int i = 0; i < values.size(); i++)
-        cout << values[i] << ", " << endl;
+    // cout << "\n\n" << notEnterValues << endl;
+    // for(unsigned int i = 0; i < values.size(); i++)
+    //     cout << values[i] << ", " << endl;
     return values;
 }
