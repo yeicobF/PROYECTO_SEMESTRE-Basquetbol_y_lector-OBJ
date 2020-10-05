@@ -24,7 +24,7 @@ using namespace std;
 
 int main(){
     // Utilizar el constructor con el nombre del archivo.
-    Object obj = Object("models/cup.obj");
+    Object obj = Object("models/cube.obj");
     obj.saveObject();
     // std::cout << "\n Terminó de guardar el objeto.\n";
     obj.printObject();
