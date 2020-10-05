@@ -21,13 +21,11 @@ void Object::saveObject(){
 		3.- Si v: Crear objeto Vertex
 		4.- Si f: Crear objeto Edge
 		5.- 		Crear objeto Face*/
-    Vertex v;
-    Edge e;
     vector <Edge> edge_list;
-    vector <Edge> edge_list_aux;
     vector <Vertex> vertex_list;
     vector <string> values;
-    string linea; //El delimitador de vértices
+    // notEnter para lo que no queremos meter en values.
+    string linea, notEnterValues = ""; //El delimitador de vértices
     // string delimitador = "  "; //No lo necesito porque lo paso como parámetro.
     // size_t pos = 0; //El inicio de posición para std::string::find()
 	// 1.- Abrir archivo OBJ
@@ -47,30 +45,31 @@ void Object::saveObject(){
          // Es el mismo delimitador para todos.
 
         if(Vertex::isGeometricVertex(linea)){
-            values = splitString(0, "  ", linea, values); //Mandar pos = 0.
+            notEnterValues = "v";
+            values = splitString(0, "  ", linea, values, notEnterValues); //Mandar pos = 0.
             //imprimeValores(values);
         /* Fuente de la conversión:
     https://www.programiz.com/cpp-programming/string-float-conversion#:~:text=help%20of%20examples.-,C%2B%2B%20string%20to%20float%20and%20double%20Conversion,convert%20string%20to%20long%20double%20.*/
 
             vertex_list.push_back(Vertex::saveVertex(values));
-            values.clear(); // Limpia el vector. Elimina todos sus elementos.
         }
         //
         if(Face::isFace(linea)){
-            values = splitString(0, "  ", linea, values); //Mandar pos = 0.
+            notEnterValues = "f";
+            values = splitString(0, "  ", linea, values, notEnterValues); //Mandar pos = 0.
             // Eliminamos el primer elemento, el cual es la f.
-            cout << "\n\n ENTRÓ AL isFace()\n\n"
+            //cout << "\n\n ENTRÓ AL isFace()\n\n" << endl;
             // Aquí trabajaré con los vértices y aristas.
             for(int i = 0; i < values.size(); i++){
                 // Mandamos el índice i+1 porque el 0 es la f de face_list.
                 edge_list.push_back(Edge::saveEdge(vertex_list, values, i));
             }
-            edge_list_aux = edge_list;
         }
         // Meter la lista de aristas a la cara actual.
         face_list.push_back(edge_list);
         // Reiniciar la lista de aristas.
         edge_list.clear();
+        values.clear(); // Limpia el vector. Elimina todos sus elementos.
 	}
     // imprimeVertex(vertex_list); //Imprime los vértices
 	OBJFile.close(); // Cerrar el archivo.
@@ -81,17 +80,17 @@ void Object::printObject(){
     int i;
     // Código para impresión.
     // Impresión de cada cara
-    for(i = 0; i < face_list.size(); i++){
-        cout << "\n - CARA " << (i + 1) << endl;
+    //for(i = 0; i < face_list.size(); i++){
+        //cout << "\n - CARA " << (i + 1) << endl;
         // Impresión de cada arista.
-        face_list[i].printFace();
+        face_list[0].printFace();
         // for(int j = 0; i < face_list[i].size(); j++){
         //     cout << "\n\t - ARISTA " << j << endl;
         //     face_list[i].printEdge();
         // }
         cout << endl;
-    }
-    cout << " - ESTE OBJETO TIENE " << i << " CARAS -" << endl;
+    //}
+    //cout << " - ESTE OBJETO TIENE " << i << " CARAS -" << endl;
 }
 
 /* Método que imprime los valores guardados en el vector de cadena.*/
@@ -105,7 +104,8 @@ void Object::imprimeValores(vector <string> v){
 /* Función que recorrerá una línea dependiendo de los parámetros dados.
  Regresará un vector que guardará como cadena los valores para así acceder
  a ellos y utilizarlos conforme los vayamos a necesitar.*/
-vector <string> Object::splitString(size_t pos, string delimitador, string linea, vector <string> values){
+vector <string> Object::splitString(size_t pos, string delimitador, string linea,
+                                    vector <string> values, string notEnterValues){
     string token;
     /* Ciclo que asigna la posición como el índice en donde se encuentra el
         delimitador en la cadena actual. Este avanza hasta que ya no haya nada.*/
@@ -113,7 +113,7 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
         // Se guarda la subcadena de 0 hasta pos.
         token = linea.substr(0, pos);
         // Agregar el elemento encontrado al vector si no es la v (Luego lo haré general).
-        if(token.compare("v") != 0 || token.compare("f") != 0) // Si es igual a v o f no se agrega, si es diferente, sí se agrega.
+        if(token.compare(notEnterValues) != 0) // Si es igual a v o f no se agrega, si es diferente, sí se agrega.
             values.push_back(token);
         // cout << token << endl;
         // Eliminar el último elemento que agregamos al vector de la cadena.
@@ -124,5 +124,8 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     al final, se agrega lo restante de la línea. Esto recordando que al
     agregar un elemento al vector se eliminaba de la cadena inicial.*/
     values.push_back(linea);
+    cout << "\n\n" << notEnterValues << endl;
+    for(int i = 0; i < values.size(); i++)
+        cout << values[i] << ", " << endl;
     return values;
 }

@@ -18,6 +18,7 @@ Face::Face(vector <Edge> edge_list){
 
 // Método que imprime las carcas con sus aristas y vértices.
 void Face::printFace(){
+    cout << "\n -> Aristas en esta cara: " << edge_list.size() << endl;
     for(int i = 0; i < edge_list.size(); i++){
     	cout << "\n\t -> ARISTA: " << i+1 <<endl;
     	edge_list[i].printEdge(); // Utilizando el método de clase Edge

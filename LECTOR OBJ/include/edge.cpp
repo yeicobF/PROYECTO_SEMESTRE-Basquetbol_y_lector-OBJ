@@ -14,8 +14,8 @@ Edge::Edge(Vertex va, Vertex vb){
 /* static */ Edge Edge::saveEdge(vector <Vertex> v_list, vector <string> values, int actualIndex){
     Edge e;
     // cout << "\n - EDGE VERTICES: " << endl;
-    for(int i = 0; i < values.size(); i++)
-        cout << values[i] << ", " << values[i].substr(0, 1) << endl;
+    // for(int i = 0; i < values.size(); i++)
+    //     cout << values[i] << ", " << values[i].substr(0, 1) << endl;
     /* Values guarda los índices de los vértices, entonces son esos a los
         que hay que meter los valores, por eso su índice es:
             stoi(values[indiceActual])*/

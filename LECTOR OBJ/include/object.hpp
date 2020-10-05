@@ -22,7 +22,8 @@ class Object{
         std::string objectName;
 
         void imprimeValores(std::vector <std::string> v);
-        std::vector <std::string> splitString(size_t pos, std::string delimitador, std::string linea, std::vector <std::string> values);
+        std::vector <std::string> splitString(size_t pos, std::string delimitador, std::string linea,
+                                                std::vector <std::string> values, std::string notEnterValues);
 
     public:
         Object(std::string OBJFileName);
