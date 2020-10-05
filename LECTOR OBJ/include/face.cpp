@@ -6,9 +6,9 @@ using namespace std;
 
 /* Clase que representa las caras o Faces.*/
 // Constructor que recibe una lista como parámetro.
-Face::Face(vector <Edge> edge_list){
+Face::Face(vector <Edge> _edge_list){
     // Como el this.atributo en Java.
-    this -> edge_list = edge_list;
+    edge_list = _edge_list;
 }
 
 // Método que devuelve true si encuentra la "f" de cara.
