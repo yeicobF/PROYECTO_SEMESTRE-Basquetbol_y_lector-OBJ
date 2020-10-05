@@ -175,8 +175,11 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     /* Como lo último no se guía por delimitadores ya que no hay espacios
     al final, se agrega lo restante de la línea. Esto recordando que al
     agregar un elemento al vector se eliminaba de la cadena inicial.*/
-
-    if(linea.compare("") != 0)
+    // REVISAR SI NO HAY UNA CADENA VACÍA.
+    /* FUENTE: Efficient way to check if std::string has only spaces
+        https://stackoverflow.com/questions/6444842/efficient-way-to-check-if-stdstring-has-only-spaces
+        */
+    if(linea.compare("") != 0 || linea.find_first_not_of(' ') != std::string::npos)
         values.push_back(linea);
     // values = eraseEmptyValues(values, " ");
     cout << "\n\n" << notEnterValues << endl;
@@ -189,7 +192,7 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
 vector <string> Object::eraseEmptyValues(vector <string> values, string valueToErase){
     unsigned int i;
     for(i = 0; i < values.size(); i++)
-        if(values[i].compare(valueToErase) == 0);
+        if(values[i].compare(valueToErase) == 0)
             values.erase(values.begin() + i);
     return values;
 }
