@@ -37,13 +37,21 @@ int main(){
 		4.- Si f: Crear objeto Edge
 		5.- 		Crear objeto Face*/
     Vertex v;
+    Edge e;
+    vextor <string> edge_list;
+    e = Edge(vertex_list[0], vertex_list[1]);
+    edge_list.push_back(e);
     vector <Vertex> vertex_list;
     vector <string> valores;
     string linea; //El delimitador de vértices
     // string delimitador = "  "; //No lo necesito porque lo paso como parámetro.
     // size_t pos = 0; //El inicio de posición para std::string::find()
 	// 1.- Abrir archivo OBJ
+    // string archivo = "";
+    // cout << "Nombre del archivo: " << endl;
+    // cin << archivo;
 	ifstream archivoOBJ("models/cube.obj");
+    //cout << "\nHola: Compilación complida\n" << endl;
     // 2.- Recorrer archivo línea a línea
 	while(getline(archivoOBJ, linea)){
         // posValores = 0; //La posición de dicho vector se reinicia.
@@ -81,7 +89,7 @@ vector <string> splitString(size_t pos, string delimitador, string linea, vector
         // Se guarda la subcadena de 0 hasta pos.
         token = linea.substr(0, pos);
         // Agregar el elemento encontrado al vector si no es la v (Luego lo haré general).
-        if(token.compare("v") != 0) // Si es igual a v no se agrega.
+        if(token.compare("v") != 0) // Si es igual a v no se agrega, si es diferente, sí se agrega.
             valores.push_back(token);
         // cout << token << endl;
         // Eliminar el último elemento que agregamos al vector de la cadena.
@@ -99,7 +107,7 @@ vector <string> splitString(size_t pos, string delimitador, string linea, vector
 void imprimeValores(vector <string> v){
     vector<string>::const_iterator i;
     cout << "\n - Imprimir vector: " << endl;
-    for(i = v.begin(); i != v.end(); ++i)
+    for(i = v.begin(); i != v.end(); i++)
         cout << *i << ", ";
     cout << "\n" << endl;
 }

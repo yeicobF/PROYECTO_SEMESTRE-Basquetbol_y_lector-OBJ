@@ -9,7 +9,7 @@
 
 class Face{
 	private:
-        std::vector <Edge> edges;
+        std::vector <Edge> edge_list;
 	public:
 		Face(std::vector <Edge> edge_list);
         // Método que imprime las carcas con sus aristas y vértices.
