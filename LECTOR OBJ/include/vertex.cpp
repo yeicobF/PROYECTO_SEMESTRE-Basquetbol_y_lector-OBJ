@@ -32,7 +32,7 @@ Vertex::Vertex(float xi, float yi, float zi){
 
 // Método que devuelve true si es un vértice geométrico.
 bool Vertex::isGeometricVertex(string str){
-    return str.substr(0, 3).compare("v  ") == 0;
+    return str.substr(0, 2).compare("v ") == 0;
 }
 
 // Método para imprimir las coordenadas del vértice.

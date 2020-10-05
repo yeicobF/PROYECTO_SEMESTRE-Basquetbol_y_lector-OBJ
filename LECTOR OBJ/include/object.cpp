@@ -46,7 +46,7 @@ void Object::saveObject(){
             saveObjectName(splitString(0, " ", linea, values, notEnterValues));
         if(Vertex::isGeometricVertex(linea)){
             notEnterValues = "v";
-            values = splitString(0, "  ", linea, values, notEnterValues); //Mandar pos = 0.
+            values = splitString(0, " ", linea, values, notEnterValues); //Mandar pos = 0.
             //imprimeValores(values);
         /* Fuente de la conversión:
     https://www.programiz.com/cpp-programming/string-float-conversion#:~:text=help%20of%20examples.-,C%2B%2B%20string%20to%20float%20and%20double%20Conversion,convert%20string%20to%20long%20double%20.*/
@@ -56,7 +56,7 @@ void Object::saveObject(){
         //
         if(Face::isFace(linea)){
             notEnterValues = "f";
-            values = splitString(0, "  ", linea, values, notEnterValues); //Mandar pos = 0.
+            values = splitString(0, " ", linea, values, notEnterValues); //Mandar pos = 0.
             // Eliminamos el primer elemento, el cual es la f.
             //cout << "\n\n ENTRÓ AL isFace()\n\n" << endl;
             // Aquí trabajaré con los vértices y aristas.
@@ -154,10 +154,18 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     /* Ciclo que asigna la posición como el índice en donde se encuentra el
         delimitador en la cadena actual. Este avanza hasta que ya no haya nada.*/
     while ((pos = linea.find(delimitador)) != std::string::npos) {
+        if(linea.substr(0, 1).compare(" ") == 0){
+            pos = linea.find(delimitador);
+            linea.erase(0, pos + delimitador.length());
+            continue;
+        }
         // Se guarda la subcadena de 0 hasta pos.
         token = linea.substr(0, pos);
+        //if(token.compare(" ") == 0) continue;
         // Agregar el elemento encontrado al vector si no es la v (Luego lo haré general).
-        if(token.compare(notEnterValues) != 0) // Si es igual a v o f no se agrega, si es diferente, sí se agrega.
+        // Si es igual a notEnterValues no se agrega, si es diferente, sí se agrega.
+        // Si es un espacio en blanco no se agrega.
+        if(token.compare(notEnterValues) != 0)
             values.push_back(token);
         // cout << token << endl;
         // Eliminar el último elemento que agregamos al vector de la cadena.
@@ -168,8 +176,18 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     al final, se agrega lo restante de la línea. Esto recordando que al
     agregar un elemento al vector se eliminaba de la cadena inicial.*/
     values.push_back(linea);
-    // cout << "\n\n" << notEnterValues << endl;
-    // for(unsigned int i = 0; i < values.size(); i++)
-    //     cout << values[i] << ", " << endl;
+    values = eraseEmptyValues(values, " ");
+    cout << "\n\n" << notEnterValues << endl;
+    for(unsigned int i = 0; i < values.size(); i++)
+        cout << values[i] << ", " << endl;
+    return values;
+}
+
+/* Método que quitará los espacios en blanco o cosas que estorben en un vector.*/
+vector <string> Object::eraseEmptyValues(vector <string> values, string valueToErase){
+    unsigned int i;
+    for(i = 0; i < values.size(); i++)
+        if(values[i].compare(valueToErase) == 0);
+            values.erase(values.begin() + i);
     return values;
 }

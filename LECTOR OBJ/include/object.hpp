@@ -30,6 +30,8 @@ class Object{
         // Método que parte una cadena dada y regresa un vector de tipo string.
         std::vector <std::string> splitString(size_t pos, std::string delimitador, std::string linea,
                                                 std::vector <std::string> values, std::string notEnterValues);
+                                                /* Método que quitará los espacios en blanco o cosas que estorben en un vector.*/
+        std::vector <std::string> eraseEmptyValues(std::vector <std::string> values, std::string valueToErase);
     public:
         Object(std::string _OBJFileName);
         // Método que guardará a los objetos.
