@@ -7,9 +7,9 @@
 using namespace std;
 
 // Constructor de objetos que recibe el nombre del archivo OBJ.
-Object::Object(string OBJFileName){
+Object::Object(string _OBJFileName){
     // Guardar el nombre del archivo.
-    this -> OBJFileName = OBJFileName;
+    OBJFileName = _OBJFileName;
     objectName = "";
 }
 
@@ -42,8 +42,10 @@ void Object::saveObject(){
         /* En la conidición que sigue comparo la subcadena de los primeros
          3 caracteres de la linea extraída para ver si son iguales a los
          del vértice en el archivo OBJ.*/
-         // Es el mismo delimitador para todos.
-
+         // notEnterValues por referencia para obtener la "o" o la "g".
+        if(isName(linea, &notEnterValues))
+            // Aquí guardamos lo que guarda el splitString.
+            saveObjectName(splitString(0, " ", linea, values, notEnterValues));
         if(Vertex::isGeometricVertex(linea)){
             notEnterValues = "v";
             values = splitString(0, "  ", linea, values, notEnterValues); //Mandar pos = 0.
@@ -70,25 +72,79 @@ void Object::saveObject(){
         }
         values.clear(); // Limpia el vector. Elimina todos sus elementos.
 	}
-    // imprimeVertex(vertex_list); //Imprime los vértices
+    nameNotFound(OBJFileName);
 	OBJFile.close(); // Cerrar el archivo.
 	// return 0;
 }
 
+// Método que guardará el nombre del objeto.
+void Object::saveObjectName(vector <string> values){
+    // Este ciclo por si guardó más de un valor el splitString se vaya concatenando.
+    for(unsigned int i = 0; i < values.size(); i++)
+        objectName += values[i];
+}
+
+// Si no se especifica el nombre en el archivo, ponerle el del archivo.
+void Object::nameNotFound(string OBJFileName){
+    // Si el archivo aún no tiene nombre.
+    if(objectName.compare("") == 0){
+        /* Hay que ver si está dentro de una carpeta para quitar su nombre.
+            Y que sea la última incidencia de la diagonal que representa una
+            carpeta.*/
+        size_t posFolder = OBJFileName.find_last_of("/");
+        // Find the position of the extension not to include it.
+        size_t posExt = OBJFileName.find(".obj");
+        // if(posFolder < 0)
+        //     objectName =
+        // Establecer el nombre del objeto como el del archivo sin su extensión.
+        // Si no pongo posFolder + 1, se imprime la diagonal.
+        /* Como la subcadena con 2 parámetros es para:
+                string.substr(índice, largo);
+            - Al restar el encuentro de la extensión con el encuentro de la
+            última diagonal - 1, el largo de hace de la cantidad necesaria
+            para no imprimir la extensión.
+                - FUENTE: Stack Overflow: C++ Get String between two
+                    delimiter String.*/
+        objectName = OBJFileName.substr(posFolder + 1, posExt - posFolder - 1);
+    }
+}
+
+// Método que verifica si la línea actual lee un nombre.
+/* El nombre se representa por una "o", aunque también puede ser con la "g",
+    que también denota un grupo.
+    - Recibe notEnterValues por referencia para que guarde la letra que
+        corresponde al nombre del objeto y así no incluirla en el nombre del
+        objeto.*/
+bool Object::isName(string str, string* notEnterValues){
+    // Si el primer caracter de la cadena es "o" o "g", devuelve true.
+    // Guardar la letra en cadena para no incluirla en la cadena del nombre.
+    if(str.substr(0, 1).compare("o") == 0)
+        *notEnterValues = "o";
+    if(str.substr(0, 1).compare("g") == 0)
+        *notEnterValues = "g";
+    return str.substr(0, 1).compare("o") == 0 || str.substr(0, 1).compare("g") == 0;
+}
+
+/* Método que imprime al objeto:
+    - NOMBRE
+    - NÚMERO DE CARA
+    - ARISTAS QUE CONFORMAN LA CARA
+    - VÉRTICES QUE CONFORMAN A LAS ARISTAS
+    - NÚMERO DE CARAS TOTALES*/
 void Object::printObject(){
     unsigned int i;
-    // Código para impresión.
+    cout << "\n\t-----------------------" << endl;
+    cout << "\n\t -> NOMBRE DEL OBJETO: " << objectName << endl;
+    cout << "\n\t-----------------------" << endl;
     // Impresión de cada cara
     for(i = 0; i < face_list.size(); i++){
         cout << "\n - CARA " << (i + 1) << endl;
-        // Impresión de cada arista.
+        // Impresión de cada cara.
         face_list[i].printFace();
-        // for(int j = 0; i < face_list[i].size(); j++){
-        //     cout << "\n\t - ARISTA " << j << endl;
-        //     face_list[i].printEdge();
-        cout << endl;
+        // Poner un separador para identificar cada cara con mayor facilidad.
+        cout << "------------------------------\n" << endl;
     }
-    cout << " - ESTE OBJETO TIENE " << i << " CARAS -" << endl;
+    cout << " - ESTE OBJETO TIENE " << i << " CARAS -\n" << endl;
 }
 
 /* Método que imprime los valores guardados en el vector de cadena.*/

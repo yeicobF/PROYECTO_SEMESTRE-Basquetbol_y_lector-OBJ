@@ -24,9 +24,14 @@ class Object{
         void imprimeValores(std::vector <std::string> v);
         std::vector <std::string> splitString(size_t pos, std::string delimitador, std::string linea,
                                                 std::vector <std::string> values, std::string notEnterValues);
-
+        // Método que guardará el nombre del objeto
+        void saveObjectName(std::vector <std::string> values);
+        // Método que verifica si la línea actual lee un nombre.
+        bool isName(std::string str, std::string* notEnterValues);
+        // Si no se especifica el nombre en el archivo, ponerle el del archivo.
+        void nameNotFound(std::string OBJFileName);
     public:
-        Object(std::string OBJFileName);
+        Object(std::string _OBJFileName);
         // Método que guardará todos los objetos.
         void saveObject();
         void printObject();
