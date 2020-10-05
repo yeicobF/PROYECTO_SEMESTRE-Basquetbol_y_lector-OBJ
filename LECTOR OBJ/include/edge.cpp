@@ -21,22 +21,30 @@ Edge::Edge(Vertex va, Vertex vb){
             stoi(values[indiceActual])*/
     // Si se llegó al índice máximo hacer arista con primer vértice.
     //cout << values[actualIndex].substr(0, 1) << stoi(values[actualIndex].substr(0, 1));
-    int index1 = stoi(values[actualIndex].substr(0, 1)), index2;
+    int index1 = stoi(values[actualIndex].substr(0, 1)), index2 = 0;
     if(actualIndex == (values.size() - 1)){
         index2 = stoi(values[0].substr(0, 1));
         e = Edge(v_list[index1], v_list[index2]);
     }
     else{ // Si está dentro del límite, asignar con siguiente vértice.
-        index2 = stoi(values[actualIndex].substr(0, 1)) + 1;
+        index2 = stoi(values[actualIndex + 1].substr(0, 1));
         e = Edge(v_list[index1], v_list[index2]);
     }
+    e.setVertexNums(index1, index2);
     return e;
 }
 
 void Edge::printEdge(){
+    cout << "\n - VÉRTICES: " << vertex_nums[0] << ", " << vertex_nums[1] << endl;
 	cout<< "\nVertice inicial: ";
 	vi.printVertex(); // Para imprimir, llamar el método de los vértices.
 	cout<< "\nVertice final: ";
 	vf.printVertex();
 	cout <<endl;
+}
+
+void Edge::setVertexNums(int v1, int v2){
+    cout << "\n Entró a setNums(), " << v1 << ", " << v2 << endl;
+    vertex_nums.push_back(v1);
+    vertex_nums.push_back(v2);
 }
