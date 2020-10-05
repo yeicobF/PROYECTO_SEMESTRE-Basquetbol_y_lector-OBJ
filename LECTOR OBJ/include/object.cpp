@@ -175,8 +175,10 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
     /* Como lo último no se guía por delimitadores ya que no hay espacios
     al final, se agrega lo restante de la línea. Esto recordando que al
     agregar un elemento al vector se eliminaba de la cadena inicial.*/
-    values.push_back(linea);
-    values = eraseEmptyValues(values, " ");
+
+    if(linea.compare("") != 0)
+        values.push_back(linea);
+    // values = eraseEmptyValues(values, " ");
     cout << "\n\n" << notEnterValues << endl;
     for(unsigned int i = 0; i < values.size(); i++)
         cout << values[i] << ", " << endl;
