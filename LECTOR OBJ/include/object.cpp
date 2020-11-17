@@ -53,16 +53,19 @@ void Object::saveObject(){
 
             vertex_list.push_back(Vertex::saveVertex(values));
         }
-        //
+        // Verifica si la línea tiene caras.
         if(Face::isFace(linea)){
             notEnterValues = "f";
             values = splitString(0, " ", linea, values, notEnterValues); //Mandar pos = 0.
             // Eliminamos el primer elemento, el cual es la f.
             //cout << "\n\n ENTRÓ AL isFace()\n\n" << endl;
             // Aquí trabajaré con los vértices y aristas.
-            for(unsigned int i = 0; i < values.size(); i++)
+            for(unsigned int i = 0; i < values.size(); i++){
                 // Mandamos el índice i+1 porque el 0 es la f de face_list.
                 edge_list.push_back(Edge::saveEdge(vertex_list, values, i));
+                // Imprime el arista para verificar que los vértices sean correctos.
+                // edge_list[i].printEdge();
+            }
             // Meter la lista de aristas a la cara actual.
             face_list.push_back(edge_list);
             // Reiniciar la lista de aristas.

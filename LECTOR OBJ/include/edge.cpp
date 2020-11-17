@@ -24,20 +24,26 @@ Edge::Edge(Vertex va, Vertex vb){
     /* Inicializar el índice del primer vértice como el número de vértice - 1
     para obtener su índice en el vector. Además, el segundo índice del que
     su valor dependerá de una condición.*/
-    int indexV1 = stoi(values[actualIndex].substr(0, 1)) - 1, indexV2 = 0;
+
+    /* values[actualIndex].substr(0, values[0].find("/") indica que buscará
+        el número completo hasta encontrar la diagonal, ya que en las líneas
+        de texto que indican el número de vértices a relacionar los aristas,
+        estos se delimitan con una diagonal.*/
+
+    int indexV1 = stoi(values[actualIndex].substr(0, values[0].find("/"))) - 1, indexV2 = 0;
     // Si se llegó al índice máximo hacer último arista con primer vértice.
     if(actualIndex == (values.size() - 1)){
         // Como llegamos al último valor, relacionar con el primer vértice.
         /* El índice del segundo vértice = el vértice en el primer índice de
         values, en donde se guardaron los vértices pero restando 1 para tener
         su índice de la lista de vértices.*/
-        indexV2 = stoi(values[0].substr(0, 1)) - 1;
+        indexV2 = stoi(values[0].substr(0, values[0].find("/"))) - 1;
         e = Edge(v_list[indexV1], v_list[indexV2]);
     }
     else{
         /* Si el primer vértice está dentro del límite,
             asignar el segundo con vértice que sigue. */
-        indexV2 = stoi(values[actualIndex + 1].substr(0, 1)) - 1;
+        indexV2 = stoi(values[actualIndex + 1].substr(0, values[0].find("/"))) - 1;
         e = Edge(v_list[indexV1], v_list[indexV2]);
     }
     /* Ahora regresar al número de vértice original para guardarlo en la lista
