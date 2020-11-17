@@ -189,7 +189,7 @@ vector <string> Object::splitString(size_t pos, string delimitador, string linea
 vector <string> Object::eraseEmptyValues(vector <string> values, string valueToErase){
     unsigned int i;
     for(i = 0; i < values.size(); i++)
-        if(values[i].compare(valueToErase) == 0);
+        if(values[i].compare(valueToErase) == 0)
             values.erase(values.begin() + i);
     return values;
 }
