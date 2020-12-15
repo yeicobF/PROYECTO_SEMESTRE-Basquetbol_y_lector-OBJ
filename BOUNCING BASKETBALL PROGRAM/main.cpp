@@ -1,10 +1,9 @@
+#include <vector>
 
 /* Estos include son para las clases que separamos en librerías
 para tener el código más limpio, y ordenado.*/
 #include "obj_reader/object.hpp"
 #include "graphics/graphic_object.hpp"
-#include <iostream>
-#include <vector>
 
 using namespace std;
 
