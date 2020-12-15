@@ -1,7 +1,8 @@
 
 /* Estos include son para las clases que separamos en librerías
 para tener el código más limpio, y ordenado.*/
-#include "include/object.hpp"
+#include "obj_reader/object.hpp"
+#include "graphics/graphic_object.hpp"
 #include <iostream>
 
 using namespace std;
@@ -24,8 +25,9 @@ using namespace std;
 
 int main(){
     // Utilizar el constructor con el nombre del archivo.
-    Object obj = Object("modelsOBJ/roca.obj");
-    obj.saveObject();
-    // std::cout << "\n Terminó de guardar el objeto.\n";
-    obj.printObject();
+    Object objBasketBall = Object("modelsOBJ/OrangeCartoon_basketball_ball_OBJ.obj");
+    objBasketBall.saveObject();
+    // std::cout << "\n Terminó de guardar el objBasketBalleto.\n";
+    objBasketBall.printObject();
+    GraphicObject basketball = GraphicObject(objBasketBall);
 }
