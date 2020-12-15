@@ -42,7 +42,9 @@ void GraphicObject::drawObject(){
     vector <Vertex> p_vertices = objFileInfo.getFacesVertices();
 
     vector <Vertex> object_vertices;
-
+    /* El número máximo de vértices para ver si se dibuja por triángulos
+        o por polígonos.*/
+    int maxVertexInFaces = 0;
     // El OBJ del balón de basket tiene 4 vértices por cara.
     for ( unsigned int i=0; i<p_vertices.size(); i++ ) {
         arma::fcolvec v = p_vertices[i].getHomogeneousCoordinates();
@@ -56,12 +58,24 @@ void GraphicObject::drawObject(){
         // cout << "\n - cbvertex: " << object_vertices;
     }
 
+    for ( unsigned int i = 0; i < object_vertices.size(); i++ )
+        if(object_vertices[i].getVertex().size() > maxVertexInFaces)
+            maxVertexInFaces = object_vertices[i].getVertex().size();
+
     glColor3f(colorR, colorG, colorB);
-    glBegin(GL_TRIANGLES);
-    for ( unsigned int i=0; i<object_vertices.size(); i++ ) {
+
+    // Si hay menos o igual a 3 vértices, dibujar por triángulos.
+    if(maxVertexInFaces <= 3)
+        glBegin(GL_TRIANGLES);
+    // Si hay más de 3 vértices se dibuja por polígonos.
+    else
+        glBegin(GL_POLYGON);
+    // Aquí se dibujan los vértices de uno por uno.
+    for ( unsigned int i = 0; i < object_vertices.size(); i++ ) {
         arma::frowvec vert = object_vertices[i].getVertex();
         glVertex3f(vert[0], vert[1], vert[2]);
     }
+
     glEnd();
 }
 
