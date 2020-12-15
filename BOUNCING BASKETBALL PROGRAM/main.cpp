@@ -44,4 +44,5 @@ int main(){
 
     // Regresa -1 si ocurre algún error.
     return GraphicObject::animateObjects(object_list);
+    // return GraphicObject::animateObjects(object_list);
 }

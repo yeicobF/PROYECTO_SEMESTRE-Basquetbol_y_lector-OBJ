@@ -1,6 +1,7 @@
 #include <cmath> // Funciones matemáticas.
 
 #include "bezier_curves.hpp"
+#include "graphic_object.hpp"
 
 // Método para obtener los vértices de las curvas de Bézier.
 /* static */vector <arma::frowvec>

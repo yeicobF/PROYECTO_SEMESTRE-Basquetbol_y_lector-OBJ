@@ -22,6 +22,15 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
     colorG = _colorG;
     colorB = _colorB;
     angle = 0.0f;
+
+    /*
+    BezierCurves::getVertices(float initialX, float initialSpeed,
+                              float speedAngle, float gravity,
+                              float yCurve[2], float dt)
+    */
+    bezierTest = BezierCurves::getVertices(distance, speed,
+                                           45, 9.8,
+                                           {8.0, 4.0}, 0.05);
 }
 
 arma::fmat GraphicObject::getObjectTransform(){
@@ -35,6 +44,60 @@ arma::fmat GraphicObject::getObjectTransform(){
                 * transform;
     return transform;
 }
+
+// Para probar las curvas de Bézier.
+void GraphicObject::drawBezierTest(){
+
+    bezierTestIndex = (bezierTestIndex < bezierTest.size()) ? bezierTest++ : 0;
+
+    arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
+    // Se aplica la transformación completa. El orden de las multiplicaciones importa.
+    transform =   Transform::Translation(bezierTest[bezierTestIndex])
+                * Transform::Scale(size, size, size)
+                * transform;
+
+
+    vector <Vertex> p_vertices = objFileInfo.getFacesVertices();
+
+    vector <Vertex> object_vertices;
+    /* El número máximo de vértices para ver si se dibuja por triángulos
+        o por polígonos.*/
+    int maxVertexInFaces = 0;
+    // El OBJ del balón de basket tiene 4 vértices por cara.
+    for ( unsigned int i=0; i<p_vertices.size(); i++ ) {
+        arma::fcolvec v = p_vertices[i].getHomogeneousCoordinates();
+        // cout << "\n - V: " << v;
+        arma::fcolvec vp = transform * v;
+        // cout << "\n - VP: " << vp;
+        Vertex rv = Vertex();
+        // cout << "\n - rv: "; rv.printVertex();
+        rv.setVertex(arma::trans(vp));
+        object_vertices.push_back(rv);
+        // cout << "\n - cbvertex: " << object_vertices;
+    }
+
+    for ( unsigned int i = 0; i < object_vertices.size(); i++ )
+        if(object_vertices[i].getVertex().size() > maxVertexInFaces)
+            maxVertexInFaces = object_vertices[i].getVertex().size();
+
+    glColor3f(colorR, colorG, colorB);
+
+    // Si hay menos o igual a 3 vértices, dibujar por triángulos.
+    if(maxVertexInFaces <= 3)
+        glBegin(GL_TRIANGLES);
+    // Si hay más de 3 vértices se dibuja por polígonos.
+    else
+        glBegin(GL_POLYGON);
+    // Aquí se dibujan los vértices de uno por uno.
+    for ( unsigned int i = 0; i < object_vertices.size(); i++ ) {
+        arma::frowvec vert = object_vertices[i].getVertex();
+        glVertex3f(vert[0], vert[1], vert[2]);
+    }
+    // Termina el dibujado.
+    glEnd();
+
+}
+
 
 void GraphicObject::drawObject(){
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
@@ -153,7 +216,10 @@ void GraphicObject::drawObject(){
                camera[0], camera[1], camera[2],
                view_up[0], view_up[1], view_up[2]);
 
-        object_list[0].drawObject();
+        // Para dibujar la prueba con Bézier.
+
+        object_list[0].drawBezierTest();
+        // object_list[0].drawObject();
         // drawEveryObject(object_list);
 
         glfwSwapBuffers(window);

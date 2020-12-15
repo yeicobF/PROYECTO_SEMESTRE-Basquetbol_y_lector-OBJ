@@ -29,6 +29,9 @@ class GraphicObject{
     	float colorR = 0.0f;
     	float colorG = 0.0f;
     	float colorB = 0.0f;
+        // Para hacer la prueba con Bezier.
+        std::vector <arma::frowvec> bezierTest;
+        int bezierTestIndex = 0;
     public:
         // Constructor vacío para no tener problemas.
         GraphicObject() {}
