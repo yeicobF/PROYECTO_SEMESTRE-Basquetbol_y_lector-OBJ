@@ -4,6 +4,7 @@ para tener el código más limpio, y ordenado.*/
 #include "obj_reader/object.hpp"
 #include "graphics/graphic_object.hpp"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -24,10 +25,23 @@ using namespace std;
  */
 
 int main(){
+    // Lista de objectos.
+    vector <GraphicObject> object_list;
     // Utilizar el constructor con el nombre del archivo.
     Object objBasketBall = Object("modelsOBJ/OrangeCartoon_basketball_ball_OBJ.obj");
     objBasketBall.saveObject();
     // std::cout << "\n Terminó de guardar el objBasketBalleto.\n";
     objBasketBall.printObject();
-    GraphicObject basketball = GraphicObject(objBasketBall);
+    /*
+    GraphicObject(Object _objFileInfo, float _scaleMultiplier,
+                                float _distance, float _speed, float _size,
+                                float _colorR, float _colorG, float _colorB)
+    */
+    GraphicObject basketball = GraphicObject(objBasketBall, 0.5,
+                                             0.0f, 1.0f, 1.0f,
+                                             1.0f, 1.0f, 1.0f);
+
+    object_list.push_back(basketball);
+
+    GraphicObject::animateObjects(object_list);
 }
