@@ -44,5 +44,7 @@ int main(){
 
     // Regresa -1 si ocurre algún error.
     return GraphicObject::animateObjects(object_list);
-    // return GraphicObject::animateObjects(object_list);
+
+    // Para la pruba de las curvas de Bézier.
+    // return GraphicObject::drawEveryBezierTest(object_list);
 }

@@ -3,6 +3,8 @@
 #include "bezier_curves.hpp"
 #include "graphic_object.hpp"
 
+using namespace std;
+
 // Método para obtener los vértices de las curvas de Bézier.
 /* static */vector <arma::frowvec>
                 BezierCurves::getVertices(float initialX, float initialSpeed,
@@ -21,17 +23,17 @@
     // PUNTOS DE CONTROL.
     arma::frowvec P1 = {initialX, 0, 0};
     // 1/4 de trayectoria el primer PC.
-    arma::frowvec P1 = {initialX * 1.25, yCurve[0], 0};
+    arma::frowvec P2 = {initialX / 3, yCurve[0], 0};
     // 3/4 de trayectoria el primer PC.
-    arma::frowvec P1 = {initialX * 1.75, yCurve[1], 0};
-    arma::frowvec P1 = {XMax, 0, 0};
+    arma::frowvec P3 = {initialX * 2, yCurve[1], 0};
+    arma::frowvec P4 = {xMax, 0, 0};
 
     // MATRIZ DE PUNTOS DE CONTROL.
     arma::fmat GB(4, 3);
-    GB.row(P1);
-    GB.row(P2);
-    GB.row(P3);
-    GB.row(P4);
+    GB.row(0) = P1;
+    GB.row(1) = P2;
+    GB.row(2) = P3;
+    GB.row(3) = P4;
 
     vector <arma::frowvec> Qt;
 

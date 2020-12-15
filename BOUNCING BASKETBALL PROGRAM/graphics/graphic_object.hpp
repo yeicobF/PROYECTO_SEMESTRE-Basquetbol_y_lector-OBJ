@@ -47,7 +47,10 @@ class GraphicObject{
         // Para hacer TODO el proceso de dibujado de los objetos.
         // Recibe un vector con todos los objetos por dibujar.
         // Regresa -1 si ocurre algún error.
-        static int animateObjects(std::vector <GraphicObject> _objects);
+        static int animateObjects(std::vector <GraphicObject> object_list);
+
+        void drawBezierTest();
+        static int drawEveryBezierTest(std::vector <GraphicObject> object_list);
 };
 
 #endif
