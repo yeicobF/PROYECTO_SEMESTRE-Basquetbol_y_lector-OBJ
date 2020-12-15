@@ -75,7 +75,7 @@ void GraphicObject::drawObject(){
         arma::frowvec vert = object_vertices[i].getVertex();
         glVertex3f(vert[0], vert[1], vert[2]);
     }
-
+    // Termina el dibujado.
     glEnd();
 }
 

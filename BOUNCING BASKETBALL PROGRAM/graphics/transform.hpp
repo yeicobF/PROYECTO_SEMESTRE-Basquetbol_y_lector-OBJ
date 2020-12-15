@@ -1,6 +1,6 @@
 #ifndef TRANSFORM_HPP
 #define TRANSFORM_HPP
-#include <stdio.h>
+
 #include <armadillo>
 
 class Transform
