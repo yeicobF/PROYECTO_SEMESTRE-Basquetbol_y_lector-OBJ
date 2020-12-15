@@ -31,17 +31,18 @@ int main(){
     Object objBasketBall = Object("modelsOBJ/OrangeCartoon_basketball_ball_OBJ.obj");
     objBasketBall.saveObject();
     // std::cout << "\n Terminó de guardar el objBasketBalleto.\n";
-    objBasketBall.printObject();
+    // objBasketBall.printObject();
     /*
     GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                                 float _distance, float _speed, float _size,
                                 float _colorR, float _colorG, float _colorB)
     */
     GraphicObject basketball = GraphicObject(objBasketBall, 0.5,
-                                             0.0f, 1.0f, 1.0f,
-                                             1.0f, 1.0f, 1.0f);
+                                             -0.5f, 5.0f, 1.0f,
+                                             1.0f, 0.0f, 0.0f);
 
     object_list.push_back(basketball);
 
-    GraphicObject::animateObjects(object_list);
+    // Regresa -1 si ocurre algún error.
+    return GraphicObject::animateObjects(object_list);
 }

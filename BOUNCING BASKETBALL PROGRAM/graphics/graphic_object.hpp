@@ -1,6 +1,9 @@
 #ifndef GRAPHICOBJECT_HPP
 #define GRAPHICOBJECT_HPP
 
+#include <vector>
+#include <armadillo>
+
 /* Los dos puntos (..) es para regresar al directorio padre y luego desde
     ahí acceder a la carpeta obj_reader. */
 #include "../obj_reader/object.hpp"
@@ -27,7 +30,10 @@ class GraphicObject{
     	float colorG = 0.0f;
     	float colorB = 0.0f;
     public:
-        GraphicObject(Object _objFileInfo, float _distance, float _speed, float _size,
+        // Constructor vacío para no tener problemas.
+        GraphicObject() {}
+        GraphicObject(Object _objFileInfo, float _scaleMultiplier,
+                      float _distance, float _speed, float _size,
                       float _colorR, float _colorG, float _colorB);
         void drawObject(); // Para mostrar el objeto en pantalla.
         // Para obtener la transformación del objeto.
@@ -37,7 +43,8 @@ class GraphicObject{
         static void drawEveryObject(std::vector <GraphicObject> objects);
         // Para hacer TODO el proceso de dibujado de los objetos.
         // Recibe un vector con todos los objetos por dibujar.
-        static void animateObjects(std::vector <GraphicObject> _objects);
+        // Regresa -1 si ocurre algún error.
+        static int animateObjects(std::vector <GraphicObject> _objects);
 };
 
 #endif

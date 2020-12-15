@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <GL/glu.h>
 #include <GLFW/glfw3.h>
-#include <armadillo>
+// #include <armadillo>
 #include <iostream>
 #include <fstream>
 
 #include "graphic_object.hpp"
+
+using namespace std;
 
 GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                             float _distance, float _speed, float _size,
@@ -22,14 +24,14 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
     angle = 0.0f;
 }
 
-arma::fmat getObjectTransform(){
+arma::fmat GraphicObject::getObjectTransform(){
     // Matriz de transformación.
     // Primero se escala con el valor base.
-    arma::fmat transform = Transform::S(scaleMultiplier, scaleMultiplier, scaleMultiplier);
+    arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     // Se aplica la transformación completa. El orden de las multiplicaciones importa.
-    transform =   Transform::R(0.0f, 1.0f, 0.0f, angle)
-                * Transform::T(distance, 0.0, 0.0)
-                * Transform::S(size, size, size)
+    transform =   Transform::Rotation(0.0f, 1.0f, 0.0f, angle)
+                * Transform::Translation(distance, 0.0, 0.0)
+                * Transform::Scale(size, size, size)
                 * transform;
     return transform;
 }
@@ -37,10 +39,11 @@ arma::fmat getObjectTransform(){
 void GraphicObject::drawObject(){
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
 
-    vector< Vertex > p_vertices = objFileInfo.getFacesVertices();
+    vector <Vertex> p_vertices = objFileInfo.getFacesVertices();
 
-    std::vector< Vertex > object_vertices;
+    vector <Vertex> object_vertices;
 
+    // El OBJ del balón de basket tiene 4 vértices por cara.
     for ( unsigned int i=0; i<p_vertices.size(); i++ ) {
         arma::fcolvec v = p_vertices[i].getHomogeneousCoordinates();
         // cout << "\n - V: " << v;
@@ -63,14 +66,14 @@ void GraphicObject::drawObject(){
 }
 
 /* En un ciclo dibuja a cada uno de los objetos.*/
-/* static */void drawEveryObject(std::vector <GraphicObject> objects){
+/* static */void GraphicObject::drawEveryObject(vector <GraphicObject> objects){
     for(unsigned int i = 0; i < objects.size(); i++)
         objects[i].drawObject();
 }
 
 // Para hacer TODO el proceso de dibujado de los objetos.
 // Recibe un vector con todos los objetos por dibujar.
-/* static */void animateObjects(std::vector <GraphicObject> object_list){
+/* static */int GraphicObject::animateObjects(vector <GraphicObject> object_list){
     // Para la perspectiva en que vemos el sistema.
     // Con eye cambiamos la perspectiva desde la que nosotros lo vemos.
     arma::frowvec eye = {0.0, 0.0, 10.0};
@@ -102,8 +105,8 @@ void GraphicObject::drawObject(){
     // glClearColor(0.0,0.0,1.0,0.0); // Dark blue
     // glClearColor(1.0f, 0.0f, 1.0f, 0.0f); // Purple
     // glClearColor(0.0f, 1.0f, 1.0f, 1.0f); // Light Blue
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Color negro para que se vea la Luna.
-    // glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Color blanco.
+    // glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Color negro para que se vea la Luna.
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Color blanco.
     //Clear the screen to this color.
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -126,8 +129,7 @@ void GraphicObject::drawObject(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    Transform Tr = Transform();
-    float t_angle = 0.0f;
+
     do {
         glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
 
@@ -137,7 +139,8 @@ void GraphicObject::drawObject(){
                camera[0], camera[1], camera[2],
                view_up[0], view_up[1], view_up[2]);
 
-        drawEveryObject(object_list);
+        object_list[0].drawObject();
+        // drawEveryObject(object_list);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -146,4 +149,7 @@ void GraphicObject::drawObject(){
         && glfwWindowShouldClose(window) == 0 );
 
     glfwTerminate();
+
+    // Si termina todo bien, regresar un 0 para indicarlo.
+    return 0;
 }
