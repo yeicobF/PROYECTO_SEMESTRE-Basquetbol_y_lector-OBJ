@@ -29,7 +29,7 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                               float speedAngle, float gravity,
                               float yCurve[2], float dt)
     */
-    float yCurvesBezier[2] = {8.0, 4.0};
+    float yCurvesBezier[2] = {1.0, 1.0};
     vector <arma::frowvec> auxVertices = BezierCurves::getVertices(distance,
                                             speed, 45, 9.8, yCurvesBezier, 0.05);
     for(int i = 0; i < auxVertices.size(); i++){

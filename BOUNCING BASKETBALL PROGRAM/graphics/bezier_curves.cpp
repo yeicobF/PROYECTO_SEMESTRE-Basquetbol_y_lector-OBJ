@@ -23,9 +23,13 @@ using namespace std;
     // PUNTOS DE CONTROL.
     arma::frowvec P1 = {initialX, 0, 0};
     // 1/4 de trayectoria el primer PC.
-    arma::frowvec P2 = {initialX / 3, yCurve[0], 0};
+    arma::frowvec P2 = {xMax / 4, yCurve[0], 0};
     // 3/4 de trayectoria el primer PC.
-    arma::frowvec P3 = {initialX * 2, yCurve[1], 0};
+    arma::frowvec P3 = {xMax / 4, yCurve[1], 0};
+    // // 1/4 de trayectoria el primer PC.
+    // arma::frowvec P2 = {initialX / 4, yCurve[0], 0};
+    // // 3/4 de trayectoria el primer PC.
+    // arma::frowvec P3 = {initialX / 4 * 3, yCurve[1], 0};
     arma::frowvec P4 = {xMax, 0, 0};
 
     // MATRIZ DE PUNTOS DE CONTROL.
