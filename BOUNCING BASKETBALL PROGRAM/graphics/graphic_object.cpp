@@ -77,25 +77,25 @@ void GraphicObject::drawObject(){
         // cout << "\n - cbvertex: " << object_vertices;
     }
 
-    for ( unsigned int i = 0; i < object_vertices.size(); i++ )
-        if(object_vertices[i].getVertex().size() > maxVertexInFaces)
-            maxVertexInFaces = object_vertices[i].getVertex().size();
-
-    glColor3f(colorR, colorG, colorB);
-
-    // Si hay menos o igual a 3 vértices, dibujar por triángulos.
-    if(maxVertexInFaces <= 3)
-        glBegin(GL_TRIANGLES);
-    // Si hay más de 3 vértices se dibuja por polígonos.
-    else
-        glBegin(GL_POLYGON);
-    // Aquí se dibujan los vértices de uno por uno.
-    for ( unsigned int i = 0; i < object_vertices.size(); i++ ) {
-        arma::frowvec vert = object_vertices[i].getVertex();
-        glVertex3f(vert[0], vert[1], vert[2]);
-    }
-    // Termina el dibujado.
-    glEnd();
+    // for ( unsigned int i = 0; i < object_vertices.size(); i++ )
+    //     if(object_vertices[i].getVertex().size() > maxVertexInFaces)
+    //         maxVertexInFaces = object_vertices[i].getVertex().size();
+    //
+    // glColor3f(colorR, colorG, colorB);
+    //
+    // // Si hay menos o igual a 3 vértices, dibujar por triángulos.
+    // if(maxVertexInFaces <= 3)
+    //     glBegin(GL_TRIANGLES);
+    // // Si hay más de 3 vértices se dibuja por polígonos.
+    // else
+    //     glBegin(GL_POLYGON);
+    // // Aquí se dibujan los vértices de uno por uno.
+    // for ( unsigned int i = 0; i < object_vertices.size(); i++ ) {
+    //     arma::frowvec vert = object_vertices[i].getVertex();
+    //     glVertex3f(vert[0], vert[1], vert[2]);
+    // }
+    // // Termina el dibujado.
+    // glEnd();
 }
 
 /* En un ciclo dibuja a cada uno de los objetos.*/
@@ -175,7 +175,7 @@ void GraphicObject::drawObject(){
         // Para dibujar la prueba con Bézier.
 
         // object_list[0].drawBezierTest();
-        // object_list[0].drawObject();
+        object_list[0].drawObject();
         // drawEveryObject(object_list);
 
         glfwSwapBuffers(window);
