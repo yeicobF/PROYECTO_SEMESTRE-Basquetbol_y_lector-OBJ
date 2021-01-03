@@ -30,9 +30,14 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                               float yCurve[2], float dt)
     */
     float yCurvesBezier[2] = {8.0, 4.0};
-    bezierTest = BezierCurves::getVertices(distance, speed,
-                                           45, 9.8,
-                                           yCurvesBezier, 0.05);
+    vector <arma::frowvec> auxVertices = BezierCurves::getVertices(distance,
+                                            speed, 45, 9.8, yCurvesBezier, 0.05);
+    for(int i = 0; i < auxVertices.size(); i++){
+        cout << auxVertices[i][0] << ", " << auxVertices[i][1] << ", " << auxVertices[i][2] << endl;
+        // Agregar los vértices al vector.
+        bezierTestVertices.push_back(Vertex(auxVertices[i][0], auxVertices[i][1], auxVertices[i][2]));
+    }
+    cout << "\n Hola" << endl;
 }
 
 arma::fmat GraphicObject::getObjectTransform(){
@@ -192,19 +197,24 @@ void GraphicObject::drawObject(){
 void GraphicObject::drawBezierTest(){
 
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
-    bezierTestIndex = (bezierTestIndex < bezierTest.size()) ? bezierTestIndex++ : 0;
+    bezierTestIndex = (bezierTestIndex < bezierTestVertices.size()) ? bezierTestIndex++ : 0;
 
     arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     // Se aplica la transformación completa. El orden de las multiplicaciones importa.
-    transform = Transform::Translation(bezierTest[bezierTestIndex][0],
-                                         bezierTest[bezierTestIndex][1],
-                                         bezierTest[bezierTestIndex][2])
+    // transform = Transform::Translation(bezierTestVertices[bezierTestIndex][0],
+    //                                    bezierTestVertices[bezierTestIndex][1],
+    //                                    bezierTestVertices[bezierTestIndex][2])
+    //             * Transform::Scale(size, size, size)
+    //             * transform;
+    transform = Transform::Translation(bezierTestVertices[bezierTestIndex].getVertex()[0],
+                                        bezierTestVertices[bezierTestIndex].getVertex()[1],
+                                        bezierTestVertices[bezierTestIndex].getVertex()[2])
                 * Transform::Scale(size, size, size)
                 * transform;
     // transform = Transform::Rotation(0.0f, 1.0f, 0.0f, angle)
-    //             * Transform::Translation(bezierTest[bezierTestIndex][0],
-    //                                      bezierTest[bezierTestIndex][1],
-    //                                      bezierTest[bezierTestIndex][2])
+    //             * Transform::Translation(bezierTestVertices[bezierTestIndex][0],
+    //                                      bezierTestVertices[bezierTestIndex][1],
+    //                                      bezierTestVertices[bezierTestIndex][2])
     //             * Transform::Scale(size, size, size)
     //             * transform;
 

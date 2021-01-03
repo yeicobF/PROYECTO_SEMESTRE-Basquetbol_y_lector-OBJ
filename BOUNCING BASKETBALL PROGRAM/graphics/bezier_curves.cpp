@@ -38,13 +38,13 @@ using namespace std;
     vector <arma::frowvec> Qt;
 
     // Calcular LOS VÉRTICES DE LA CURVA.
-    for(float t = 0.0; t <= 1.0 + dt; t += dt){
+    for(float t = 0.0, i = 0; t <= 1.0 + dt; t += dt, i++){
         // MATRIZ DE TRANSLACIÓN.
     	arma::frowvec T = {powf(t, 3), powf(t, 2), t, 1};
     	// Si no ponemos frowvec salta error
         // DERIVADA DE LA ECUACIÓN DE LA CURVA.
     	Qt.push_back( T * MB * GB );
-    	// cout << "... t = " << t << " ... punto: " << Qt[i];
+    	cout << "... t = " << t << " ... punto: " << Qt[i];
     }
     // Estas serán las coordenadas del objeto.
     // Se debe guardar la Qt en un Vertex, y sacar sus coordenadas homogéneas.
