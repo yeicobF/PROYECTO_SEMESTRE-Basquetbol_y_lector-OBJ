@@ -175,7 +175,7 @@ void GraphicObject::drawObject(){
         // Para dibujar la prueba con Bézier.
 
         // object_list[0].drawBezierTest();
-        object_list[0].drawObject();
+        // object_list[0].drawObject();
         // drawEveryObject(object_list);
 
         glfwSwapBuffers(window);
