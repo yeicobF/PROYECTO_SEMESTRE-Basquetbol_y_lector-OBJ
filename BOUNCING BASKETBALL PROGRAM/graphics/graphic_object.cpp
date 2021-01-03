@@ -33,11 +33,11 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
     vector <arma::frowvec> auxVertices = BezierCurves::getVertices(distance,
                                             speed, 45, 9.8, yCurvesBezier, 0.05);
     for(int i = 0; i < auxVertices.size(); i++){
-        cout << auxVertices[i][0] << ", " << auxVertices[i][1] << ", " << auxVertices[i][2] << endl;
+        // cout << auxVertices[i][0] << ", " << auxVertices[i][1] << ", " << auxVertices[i][2] << endl;
         // Agregar los vértices al vector.
         bezierTestVertices.push_back(Vertex(auxVertices[i][0], auxVertices[i][1], auxVertices[i][2]));
     }
-    cout << "\n Hola" << endl;
+    // cout << "\n Hola" << endl;
 }
 
 arma::fmat GraphicObject::getObjectTransform(){
@@ -174,8 +174,8 @@ void GraphicObject::drawObject(){
 
         // Para dibujar la prueba con Bézier.
 
-        // object_list[0].drawBezierTest();
-        object_list[0].drawObject();
+        object_list[0].drawBezierTest();
+        // object_list[0].drawObject();
         // drawEveryObject(object_list);
 
         glfwSwapBuffers(window);
@@ -197,7 +197,7 @@ void GraphicObject::drawObject(){
 void GraphicObject::drawBezierTest(){
 
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
-    bezierTestIndex = (bezierTestIndex < bezierTestVertices.size()) ? bezierTestIndex++ : 0;
+    bezierTestIndex = (bezierTestIndex < bezierTestVertices.size() - 1) ? bezierTestIndex + 1 : 0;
 
     arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     // Se aplica la transformación completa. El orden de las multiplicaciones importa.
@@ -206,6 +206,12 @@ void GraphicObject::drawBezierTest(){
     //                                    bezierTestVertices[bezierTestIndex][2])
     //             * Transform::Scale(size, size, size)
     //             * transform;
+
+    cout << "\n TRANSLATION: [Index = " << bezierTestIndex << ", "
+        << bezierTestVertices[bezierTestIndex].getVertex()[0] << ", "
+        << bezierTestVertices[bezierTestIndex].getVertex()[1] << ", "
+        << bezierTestVertices[bezierTestIndex].getVertex()[2] << endl;
+
     transform = Transform::Translation(bezierTestVertices[bezierTestIndex].getVertex()[0],
                                         bezierTestVertices[bezierTestIndex].getVertex()[1],
                                         bezierTestVertices[bezierTestIndex].getVertex()[2])

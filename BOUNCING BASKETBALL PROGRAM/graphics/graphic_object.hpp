@@ -31,7 +31,7 @@ class GraphicObject{
     	float colorB = 0.0f;
         // Para hacer la prueba con Bezier.
         std::vector <Vertex> bezierTestVertices;
-        int bezierTestIndex = 0;
+        int bezierTestIndex = -1;
     public:
         // Constructor vacío para no tener problemas.
         GraphicObject() {}
