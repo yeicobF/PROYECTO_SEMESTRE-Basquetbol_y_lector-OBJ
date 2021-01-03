@@ -47,5 +47,6 @@ using namespace std;
     	// cout << "... t = " << t << " ... punto: " << Qt[i];
     }
     // Estas serán las coordenadas del objeto.
+    // Se debe guardar la Qt en un Vertex, y sacar sus coordenadas homogéneas.
     return Qt;
 }
