@@ -35,6 +35,10 @@ class GraphicObject{
         int bezierTestIndex = -1;
         // Para manejar las curvas de Bézier.
         BezierCurves bezier;
+        // Variable que indica si se puede dibujar un balón.
+        bool drawBall = true;
+        // Vector de objetos GraphicObject.
+        // static std::vector <GraphicObject> object_list;
     public:
         // Constructor vacío para no tener problemas.
         GraphicObject() {}
@@ -46,7 +50,7 @@ class GraphicObject{
         // Recibe el multiplicador del tamaño del objeto para escalarlo en base a ese.
         arma::fmat getObjectTransform();
         // Dibuja TODOS los objectos en batallas.
-        static void drawEveryObject(std::vector <GraphicObject> objects);
+        static void drawEveryObject(std::vector <GraphicObject> _objects);
         // Para hacer TODO el proceso de dibujado de los objetos.
         // Recibe un vector con todos los objetos por dibujar.
         // Regresa -1 si ocurre algún error.
@@ -54,6 +58,24 @@ class GraphicObject{
         // Hace todo el dibujado y movimiento.
         int drawBezier();
         static int drawEveryBezierTest(std::vector <GraphicObject> object_list);
+        // Revisar si aún se puede dibujar el objeto.
+        bool isObjectDrawable(){
+            return drawBall;
+        }
+        // Establecer que ya no se pueda dibujar el objeto.
+        void setObjectNotDrawable(){
+            drawBall = false;
+        }
+        // Establecer colores del objeto.
+        void setColors(float _colorR, float _colorG, float _colorB){
+            colorR = _colorR;
+            colorG = _colorG;
+            colorB = _colorB;
+        }
+        // // Vector de objetos GraphicObject.
+        // static std::vector <GraphicObject> get_object_list(){
+        //     return object_list;
+        // };
 };
 
 #endif

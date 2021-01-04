@@ -18,7 +18,10 @@ arma::frowvec eye = {0.0, 0.0, 10.0};
 arma::frowvec camera = {0.0, 0.0, 0.0};
 arma::frowvec view_up = {0.0, 1.0, 0.0};
 int view = 1;
-
+// Booleano para ver si se presionó enter.
+bool was_enter_pressed = false;
+// Para ver si se presionó backspace.
+bool was_shift_pressed = false;
 /* FUNCIÓN PARA MOVER LA CÁMARA.
     - FUENTE: https://github.com/Alzahraa-Ahmed/Computer-Graphics-OpenGL-Assignment-2--Hello-GLFW/blob/master/main.cpp*/
 // Prototipo.
@@ -74,6 +77,12 @@ arma::fmat GraphicObject::getObjectTransform(){
 // Para hacer TODO el proceso de dibujado de los objetos.
 // Recibe un vector con todos los objetos por dibujar.
 /* static */int GraphicObject::animateObjects(vector <GraphicObject> object_list){
+    // Auxiliar del objeto sin modificar.
+    // Para generar un balón desde la izquierda.
+    GraphicObject auxObject = object_list[0];
+    // Para generar un balón desde la derecha.
+    GraphicObject auxObject2 = object_list[1];
+    // object_list = _object_list;
     // Para la perspectiva en que vemos el sistema.
     // Con eye cambiamos la perspectiva desde la que nosotros lo vemos.
     eye = {0.0, 0.0, 10.0};
@@ -129,7 +138,7 @@ arma::fmat GraphicObject::getObjectTransform(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    // int count = 0;
+    int count = 2;
 
     // glfwSetKeyCallback(window, keyCallback);
     // Booleano para dibujar el balón.
@@ -171,6 +180,28 @@ arma::fmat GraphicObject::getObjectTransform(){
                   view_up[0],view_up[1],view_up[2]);
 
       	glfwSetKeyCallback(window, key_callback);
+        // Ver si se presionó la tecla enter.
+
+        // Ver si se presionó backspace + enter.
+        if(was_shift_pressed){
+            // GraphicObject basketball = object_list[0];
+            object_list.push_back(auxObject2);
+            was_shift_pressed = false;
+        }
+        if(was_enter_pressed){
+            // GraphicObject basketball = object_list[0];
+            object_list.push_back(auxObject);
+            was_enter_pressed = false;
+        }
+        // Dibujar los nuevos agregados.
+        if(object_list.size() > 2)
+            for(int i = 2; i < object_list.size(); i++){
+                // Revisar si aún se puede dibujar el objeto.
+                if(object_list[i].isObjectDrawable())
+                    if(object_list[i].drawBezier() == 1)
+                        object_list[i].setObjectNotDrawable();
+            }
+
        // Para dibujar la prueba con Bézier.
 
        // object_list[0].drawBezier();
@@ -364,7 +395,7 @@ void GraphicObject::drawObject(){
         objects[i].drawObject();
 }
 
-// IMPLEMENTACIÓN PARA MOVER LA CÁMARA.
+// IMPLEMENTACIÓN PARA MOVER LA CÁMARA, Y GENERAR NUEVO OBJETO.
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
     // La vista inicial.
     // Al presionar 1.
@@ -387,6 +418,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     	view_up = {0.0, 0.0, -1.0};
     	view = 3;
 	}
+    if(key == GLFW_KEY_ENTER && action == GLFW_PRESS)
+        was_enter_pressed = true;
+    if(key == GLFW_KEY_BACKSPACE && action == GLFW_PRESS)
+        was_shift_pressed = true;
 }
 
 /*
