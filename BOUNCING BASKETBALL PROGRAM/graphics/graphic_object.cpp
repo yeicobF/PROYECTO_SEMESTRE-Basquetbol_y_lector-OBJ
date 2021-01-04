@@ -50,7 +50,7 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                           1.0, 0.02);
     bezier.calculateVertices(); // Calcular los vértices.
     for(int i = 0; i < bezier.getVertices().size(); i++){
-        // cout << bezier.getVertices()[i][0] << ", " << bezier.getVertices()[i][1] << ", " << bezier.getVertices()[i][2] << endl;
+        // // cout << bezier.getVertices()[i][0] << ", " << bezier.getVertices()[i][1] << ", " << bezier.getVertices()[i][2] << endl;
         // Agregar los vértices al vector.
         // bezier.getVertices()[Número de vértice][coordenada x, y, o z]
         bezierTestVertices.push_back(Vertex(bezier.getVertices()[i][0],
@@ -248,19 +248,19 @@ arma::fmat GraphicObject::getObjectTransform(){
 int GraphicObject::drawBezier(){
 
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
-    // cout << "\n Hola" << endl;
+    // // cout << "\n Hola" << endl;
     // // Si el índice no llega a su máximo, seguir aumentando.
-    // cout << "\n bezierTestVertices.size() = " << bezierTestVertices.size() << endl;
-    // cout << "\n bezierTestIndex = " << bezierTestIndex << endl;
-    // cout << "\nbezierTestIndex > (bezierTestVertices.size() - 1): " << (bezierTestIndex < (bezierTestVertices.size() - 1)) << endl;
+    // // cout << "\n bezierTestVertices.size() = " << bezierTestVertices.size() << endl;
+    // // cout << "\n bezierTestIndex = " << bezierTestIndex << endl;
+    // // cout << "\nbezierTestIndex > (bezierTestVertices.size() - 1): " << (bezierTestIndex < (bezierTestVertices.size() - 1)) << endl;
     // Me sale que -1 es mayor que los positivos.
     // if(bezierTestIndex < (bezierTestVertices.size() - 1)){
     if((bezierTestVertices.size() - bezierTestIndex) > 1){
         bezierTestIndex++;
-        // cout << "\n Hola 2" << endl;
+        // // cout << "\n Hola 2" << endl;
     }
     else{
-        // cout << "\n Hola 4" << endl;
+        // // cout << "\n Hola 4" << endl;
         bezierTestIndex = 0;
         bezier.calculateVertices();
         bezierTestVertices.clear();
@@ -271,7 +271,7 @@ int GraphicObject::drawBezier(){
                                                 bezier.getVertices()[i][1],
                                                 bezier.getVertices()[i][2]));
     }
-    // cout << "\n Hola 3" << endl;
+    // // cout << "\n Hola 3" << endl;
     arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     // Se aplica la transformación completa. El orden de las multiplicaciones importa.
     // transform = Transform::Translation(bezierTestVertices[bezierTestIndex][0],
@@ -280,7 +280,7 @@ int GraphicObject::drawBezier(){
     //             * Transform::Scale(size, size, size)
     //             * transform;
 
-    // cout << "\n TRANSLATION: [Index = " << bezierTestIndex << ", "
+    // // cout << "\n TRANSLATION: [Index = " << bezierTestIndex << ", "
     //     << bezierTestVertices[bezierTestIndex].getVertex()[0] << ", "
     //     << bezierTestVertices[bezierTestIndex].getVertex()[1] << ", "
     //     << bezierTestVertices[bezierTestIndex].getVertex()[2] << endl;
@@ -307,14 +307,14 @@ int GraphicObject::drawBezier(){
     // El OBJ del balón de basket tiene 4 vértices por cara.
     for ( unsigned int i=0; i<p_vertices.size(); i++ ) {
         arma::fcolvec v = p_vertices[i].getHomogeneousCoordinates();
-        // cout << "\n - V: " << v;
+        // // cout << "\n - V: " << v;
         arma::fcolvec vp = transform * v;
-        // cout << "\n - VP: " << vp;
+        // // cout << "\n - VP: " << vp;
         Vertex rv = Vertex();
-        // cout << "\n - rv: "; rv.printVertex();
+        // // cout << "\n - rv: "; rv.printVertex();
         rv.setVertex(arma::trans(vp));
         object_vertices.push_back(rv);
-        // cout << "\n - cbvertex: " << object_vertices;
+        // // cout << "\n - cbvertex: " << object_vertices;
     }
 
     for ( unsigned int i = 0; i < object_vertices.size(); i++ )
@@ -356,14 +356,14 @@ void GraphicObject::drawObject(){
     // El OBJ del balón de basket tiene 4 vértices por cara.
     for ( unsigned int i=0; i<p_vertices.size(); i++ ) {
         arma::fcolvec v = p_vertices[i].getHomogeneousCoordinates();
-        // cout << "\n - V: " << v;
+        // // cout << "\n - V: " << v;
         arma::fcolvec vp = getObjectTransform() * v;
-        // cout << "\n - VP: " << vp;
+        // // cout << "\n - VP: " << vp;
         Vertex rv = Vertex();
-        // cout << "\n - rv: "; rv.printVertex();
+        // // cout << "\n - rv: "; rv.printVertex();
         rv.setVertex(arma::trans(vp));
         object_vertices.push_back(rv);
-        // cout << "\n - cbvertex: " << object_vertices;
+        // // cout << "\n - cbvertex: " << object_vertices;
     }
 
     for ( unsigned int i = 0; i < object_vertices.size(); i++ )

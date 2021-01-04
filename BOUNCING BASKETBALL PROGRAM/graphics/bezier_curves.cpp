@@ -31,7 +31,7 @@ BezierCurves::BezierCurves(float _initialX, float _initialY, float _initialSpeed
 
 // Método para obtener los vértices de las curvas de Bézier.
 void BezierCurves::calculateVertices(){
-    cout << "\n  - CURRENT BOUNCE: " << currentBounce << endl;
+    // cout << "\n  - CURRENT BOUNCE: " << currentBounce << endl;
     // Valores máximos para x y y del salto actual.
     currentBounceMaxX =  (xMax / numberOfBounces * currentBounce);
     // Aumentar eñ número del rebote actual.
@@ -68,7 +68,7 @@ void BezierCurves::calculateVertices(){
     	// Si no ponemos frowvec salta error
         // DERIVADA DE LA ECUACIÓN DE LA CURVA.
     	Qt.push_back( T * MB * GB );
-    	cout << "... t = " << t << " ... punto: " << Qt[i];
+    	// cout << "... t = " << t << " ... punto: " << Qt[i];
     }
 }
 
