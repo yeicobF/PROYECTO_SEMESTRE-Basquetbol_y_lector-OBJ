@@ -30,8 +30,9 @@ class BezierCurves{
         arma::fmat MB;
         // Estas serán las coordenadas del objeto.
         // Se debe guardar la Qt en un Vertex, y sacar sus coordenadas homogéneas.
-        vector <arma::frowvec> Qt;
+        std::vector <arma::frowvec> Qt;
     public:
+        BezierCurves(){}
         // No necesitaremos instanciar.
         BezierCurves(float _initialX, float _initialY, float _initialSpeed,
                      float _speedAngle, float _numberOfBounces, float gravity,

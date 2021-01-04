@@ -7,7 +7,6 @@
 #include <fstream>
 
 #include "graphic_object.hpp"
-#include "bezier_curves.hpp"
 
 using namespace std;
 
@@ -29,17 +28,20 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                  float _speedAngle, float _numberOfBounces, float gravity,
                  float _yMax, float _dt);
     */
-    BezierCurves bezier = BezierCurves(distance, 0.0, speed,
+    bezier = BezierCurves(distance, 0.0, speed,
                                        45, 5, 9.8,
                                        1.0, 0.05);
     bezier.calculateVertices(); // Calcular los vértices.
-    for(int i = 0; i < bezier.getVertices().size(); i++)
-        // cout << auxVertices[i][0] << ", " << auxVertices[i][1] << ", " << auxVertices[i][2] << endl;
+    for(int i = 0; i < bezier.getVertices().size(); i++){
+        cout << bezier.getVertices()[i][0] << ", " << bezier.getVertices()[i][1] << ", " << bezier.getVertices()[i][2] << endl;
         // Agregar los vértices al vector.
         // bezier.getVertices()[Número de vértice][coordenada x, y, o z]
         bezierTestVertices.push_back(Vertex(bezier.getVertices()[i][0],
                                             bezier.getVertices()[i][1],
                                             bezier.getVertices()[i][2]));
+    }
+    // Si inicializo a -1 la comparación no funciona bien.
+    bezierTestIndex = 0;
 }
 
 arma::fmat GraphicObject::getObjectTransform(){
@@ -53,9 +55,6 @@ arma::fmat GraphicObject::getObjectTransform(){
                 * transform;
     return transform;
 }
-
-
-
 
 void GraphicObject::drawObject(){
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
@@ -199,15 +198,30 @@ void GraphicObject::drawObject(){
 void GraphicObject::drawBezierTest(){
 
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
-    // Si el índice no llega a su máximo, seguir aumentando.
-    if(bezierTestIndex < bezierTestVertices.size() - 1)
+    // cout << "\n Hola" << endl;
+    // // Si el índice no llega a su máximo, seguir aumentando.
+    // cout << "\n bezierTestVertices.size() = " << bezierTestVertices.size() << endl;
+    // cout << "\n bezierTestIndex = " << bezierTestIndex << endl;
+    // cout << "\nbezierTestIndex > (bezierTestVertices.size() - 1): " << (bezierTestIndex < (bezierTestVertices.size() - 1)) << endl;
+    // Me sale que -1 es mayor que los positivos.
+    // if(bezierTestIndex < (bezierTestVertices.size() - 1)){
+    if((bezierTestVertices.size() - bezierTestIndex) > 1){
         bezierTestIndex++;
+        // cout << "\n Hola 2" << endl;
+    }
     else{
+        // cout << "\n Hola 4" << endl;
         bezierTestIndex = 0;
         bezier.calculateVertices();
-        bezierTestVertices = bezier.getVertices();
+        bezierTestVertices.clear();
+        for(int i = 0; i < bezier.getVertices().size(); i++)
+            // Agregar los vértices al vector.
+            // bezier.getVertices()[Número de vértice][coordenada x, y, o z]
+            bezierTestVertices.push_back(Vertex(bezier.getVertices()[i][0],
+                                                bezier.getVertices()[i][1],
+                                                bezier.getVertices()[i][2]));
     }
-    
+    // cout << "\n Hola 3" << endl;
     arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     // Se aplica la transformación completa. El orden de las multiplicaciones importa.
     // transform = Transform::Translation(bezierTestVertices[bezierTestIndex][0],
@@ -257,6 +271,7 @@ void GraphicObject::drawBezierTest(){
         if(object_vertices[i].getVertex().size() > maxVertexInFaces)
             maxVertexInFaces = object_vertices[i].getVertex().size();
 
+    // El color de los polígonos.
     glColor3f(colorR, colorG, colorB);
 
     // Si hay menos o igual a 3 vértices, dibujar por triángulos.
@@ -272,7 +287,6 @@ void GraphicObject::drawBezierTest(){
     }
     // Termina el dibujado.
     glEnd();
-
 }
 
 // Para hacer TODO el proceso de dibujado de los objetos.

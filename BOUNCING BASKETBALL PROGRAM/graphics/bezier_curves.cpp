@@ -21,7 +21,7 @@ BezierCurves::BezierCurves(float _initialX, float _initialY, float _initialSpeed
 
     // Hay que calcular la X máxima de acuerdo a los parámetros.
     xMax = fabs((pow(initialSpeed, 2) * sin(2 * speedAngle)) / gravity + initialX);
-    yMax = _yMax;
+    currentBounceMaxY = yMax = _yMax;
     // Matriz de Bézier. Constante.
     MB = {{-1, 3, -3, 1},
 		  {3, -6, 3, 0},
@@ -31,13 +31,12 @@ BezierCurves::BezierCurves(float _initialX, float _initialY, float _initialSpeed
 
 // Método para obtener los vértices de las curvas de Bézier.
 void BezierCurves::calculateVertices(){
-
+    cout << "\n Hola calculate 1" << endl;
     // Valores máximos para x y y del salto actual.
     currentBounceMaxX = xMax / numberOfBounces * currentBounce;
     // Aumentar eñ número del rebote actual.
-    // La altura máxima de y irá disminuyendo 1/4 de la altura máxima anterior.
-    currentBounceMaxY *= 0.75;
-
+    currentBounce++;
+cout << "\n Hola calculate 2" << endl;
     // PUNTOS DE CONTROL.
     arma::frowvec P1 = {initialX, 0, 0};
     // 1/4 de trayectoria el primer PC.
@@ -50,6 +49,8 @@ void BezierCurves::calculateVertices(){
     // arma::frowvec P3 = {initialX / 4 * 3, yCurve[1], 0};
     arma::frowvec P4 = {currentBounceMaxX, 0, 0};
 
+    // La altura máxima de y irá disminuyendo 1/4 de la altura máxima anterior.
+    currentBounceMaxY *= 0.75;
     // Establecer que ahora la X inicial será con la que se terminó aquí.
     initialX = currentBounceMaxX;
 
@@ -60,8 +61,15 @@ void BezierCurves::calculateVertices(){
     GB.row(2) = P3;
     GB.row(3) = P4;
 
+cout << "\n Hola calculate 3" << endl;
 
+    // Matriz de Bézier. Constante.
+    MB = {{-1, 3, -3, 1},
+          {3, -6, 3, 0},
+          {-3, 3, 0, 0},
+          {1, 0, 0, 0}};
 
+    Qt.clear(); // Reiniciar vector.
     // Calcular LOS VÉRTICES DE LA CURVA.
     for(float t = 0.0, i = 0; t <= 1.0 + dt; t += dt, i++){
         // MATRIZ DE TRANSLACIÓN.

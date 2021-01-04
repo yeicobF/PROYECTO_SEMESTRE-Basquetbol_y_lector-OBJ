@@ -7,7 +7,8 @@
 /* Los dos puntos (..) es para regresar al directorio padre y luego desde
     ahí acceder a la carpeta obj_reader. */
 #include "../obj_reader/object.hpp"
-#include "../graphics/transform.hpp"
+#include "transform.hpp"
+#include "bezier_curves.hpp"
 
 /*
     CLASE EN DONDE SE MANEJARÁ LA PARTE DE LOS GRÁFICOS,
@@ -32,6 +33,8 @@ class GraphicObject{
         // Para hacer la prueba con Bezier.
         std::vector <Vertex> bezierTestVertices;
         int bezierTestIndex = -1;
+        // Para manejar las curvas de Bézier.
+        BezierCurves bezier;
     public:
         // Constructor vacío para no tener problemas.
         GraphicObject() {}
