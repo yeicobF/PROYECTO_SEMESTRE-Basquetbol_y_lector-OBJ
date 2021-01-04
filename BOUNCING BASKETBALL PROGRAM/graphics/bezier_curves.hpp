@@ -35,11 +35,12 @@ class BezierCurves{
         BezierCurves(){}
         // No necesitaremos instanciar.
         BezierCurves(float _initialX, float _initialY, float _initialSpeed,
-                     float _speedAngle, float _numberOfBounces, float gravity,
+                     float _speedAngle, int _numberOfBounces, float gravity,
                      float _yMax, float _dt);
         void calculateVertices();
         // Devuelve un arreglo con los n vértices.
         std::vector <arma::frowvec> getVertices();
+        bool isLastBounce();
 };
 
 #endif

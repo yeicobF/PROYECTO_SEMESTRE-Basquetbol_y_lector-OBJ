@@ -25,15 +25,15 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
 
     /*
     BezierCurves(float _initialX, float _initialY, float _initialSpeed,
-                 float _speedAngle, float _numberOfBounces, float gravity,
+                 float _speedAngle, int _numberOfBounces, float gravity,
                  float _yMax, float _dt);
     */
     bezier = BezierCurves(distance, 0.0, speed,
-                                       45, 5, 9.8,
-                                       1.0, 0.05);
+                          70, 6, 9.8,
+                          1.0, 0.02);
     bezier.calculateVertices(); // Calcular los vértices.
     for(int i = 0; i < bezier.getVertices().size(); i++){
-        cout << bezier.getVertices()[i][0] << ", " << bezier.getVertices()[i][1] << ", " << bezier.getVertices()[i][2] << endl;
+        // cout << bezier.getVertices()[i][0] << ", " << bezier.getVertices()[i][1] << ", " << bezier.getVertices()[i][2] << endl;
         // Agregar los vértices al vector.
         // bezier.getVertices()[Número de vértice][coordenada x, y, o z]
         bezierTestVertices.push_back(Vertex(bezier.getVertices()[i][0],
@@ -163,6 +163,7 @@ void GraphicObject::drawObject(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    int count = 0;
 
     do {
         glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
@@ -173,18 +174,25 @@ void GraphicObject::drawObject(){
                camera[0], camera[1], camera[2],
                view_up[0], view_up[1], view_up[2]);
 
-        // Para dibujar la prueba con Bézier.
 
-        object_list[0].drawBezierTest();
         // object_list[0].drawObject();
         // drawEveryObject(object_list);
+        if(object_list[count].drawBezier() == 1){
+            // Esperar a que presione enter.
+            // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
+            // object_list.push_back(object_list[count]);
+            // count++;
+            break;
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
 
+        // Para dibujar la prueba con Bézier.
+
     } while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS
         && glfwWindowShouldClose(window) == 0 );
-
+    
     glfwTerminate();
 
     // Si termina todo bien, regresar un 0 para indicarlo.
@@ -194,8 +202,8 @@ void GraphicObject::drawObject(){
 
 /* PARA HACER PRUEBAS CON LAS CURVAS DE BÉZIER.*/
 
-// Para probar las curvas de Bézier.
-void GraphicObject::drawBezierTest(){
+// Para probar las curvas de Bézier. Regresa 1 si ya se dibujaron los rebotes.
+int GraphicObject::drawBezier(){
 
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
     // cout << "\n Hola" << endl;
@@ -230,10 +238,10 @@ void GraphicObject::drawBezierTest(){
     //             * Transform::Scale(size, size, size)
     //             * transform;
 
-    cout << "\n TRANSLATION: [Index = " << bezierTestIndex << ", "
-        << bezierTestVertices[bezierTestIndex].getVertex()[0] << ", "
-        << bezierTestVertices[bezierTestIndex].getVertex()[1] << ", "
-        << bezierTestVertices[bezierTestIndex].getVertex()[2] << endl;
+    // cout << "\n TRANSLATION: [Index = " << bezierTestIndex << ", "
+    //     << bezierTestVertices[bezierTestIndex].getVertex()[0] << ", "
+    //     << bezierTestVertices[bezierTestIndex].getVertex()[1] << ", "
+    //     << bezierTestVertices[bezierTestIndex].getVertex()[2] << endl;
 
     transform =   Transform::Translation(bezierTestVertices[bezierTestIndex].getVertex()[0],
                                         bezierTestVertices[bezierTestIndex].getVertex()[1],
@@ -287,6 +295,11 @@ void GraphicObject::drawBezierTest(){
     }
     // Termina el dibujado.
     glEnd();
+    // Si ya se hicieron todos los rebotes, terminar.
+    if(bezier.isLastBounce())
+        return 1;
+    else
+        return 0;
 }
 
 // Para hacer TODO el proceso de dibujado de los objetos.
@@ -359,7 +372,7 @@ void GraphicObject::drawBezierTest(){
 
         // Para dibujar la prueba con Bézier.
 
-        object_list[0].drawBezierTest();
+        object_list[0].drawBezier();
         // object_list[0].drawObject();
         // drawEveryObject(object_list);
 
