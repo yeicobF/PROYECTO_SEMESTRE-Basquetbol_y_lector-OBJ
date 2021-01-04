@@ -10,6 +10,20 @@
 
 using namespace std;
 
+//Variables PARA LA CÁMARA
+float cameraAngle = 0.0f;
+// Para la perspectiva en que vemos el sistema.
+// Con eye cambiamos la perspectiva desde la que nosotros lo vemos.
+arma::frowvec eye = {0.0, 0.0, 10.0};
+arma::frowvec camera = {0.0, 0.0, 0.0};
+arma::frowvec view_up = {0.0, 1.0, 0.0};
+
+/* FUNCIÓN PARA MOVER LA CÁMARA.
+    - FUENTE: https://github.com/Alzahraa-Ahmed/Computer-Graphics-OpenGL-Assignment-2--Hello-GLFW/blob/master/main.cpp*/
+// Prototipo.
+static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+
+
 GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                             float _distance, float _speed, float _size,
                             float _colorR, float _colorG, float _colorB){
@@ -165,26 +179,53 @@ void GraphicObject::drawObject(){
 
     int count = 0;
 
+    glfwSetKeyCallback(window, keyCallback);
+    // Booleano para dibujar el balón.
+    bool drawBall = true;
     do {
         glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
 
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        gluLookAt(eye[0], eye[1], eye[2],
-               camera[0], camera[1], camera[2],
-               view_up[0], view_up[1], view_up[2]);
+       float ratio;
+       int width, height;
+       glfwGetFramebufferSize(window, &width, &height);
+       ratio = width / float(height);
+       glViewport(0, 0, width, height);
 
+       glEnable(GL_DEPTH_TEST); //surface transparency
+       glDepthFunc(GL_LESS);
+       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+       glMatrixMode(GL_PROJECTION);
+       glLoadIdentity();
+       glFrustum(-ratio, ratio, -ratio, ratio, 1.0f, 40.0f);
+
+       glMatrixMode(GL_MODELVIEW);
+       glLoadIdentity();
+
+       //display
+       glTranslated(0.0f, 0.0f, -4.0f);
+       glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f);
+       gluLookAt(eye[0], eye[1], eye[2],
+              camera[0], camera[1], camera[2],
+              view_up[0], view_up[1], view_up[2]);
+
+       // Para dibujar la prueba con Bézier.
+
+       // object_list[0].drawBezier();
+       object_list[1].drawObject();
+       // object_list[0].drawObject();
+       // drawEveryObject(object_list);
 
         // object_list[0].drawObject();
         // drawEveryObject(object_list);
-        if(object_list[count].drawBezier() == 1){
-            // Esperar a que presione enter.
-            // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
-            // object_list.push_back(object_list[count]);
-            // count++;
-            break;
+        if(drawBall){ // Ver si se puede seguir dibujando la pelota.
+            if(object_list[0].drawBezier() == 1){
+                // Esperar a que presione enter.
+                // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
+                // object_list.push_back(object_list[count]);
+                // count++;
+                drawBall = false;
+            }
         }
-
         glfwSwapBuffers(window);
         glfwPollEvents();
 
@@ -192,7 +233,7 @@ void GraphicObject::drawObject(){
 
     } while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS
         && glfwWindowShouldClose(window) == 0 );
-    
+
     glfwTerminate();
 
     // Si termina todo bien, regresar un 0 para indicarlo.
@@ -305,11 +346,7 @@ int GraphicObject::drawBezier(){
 // Para hacer TODO el proceso de dibujado de los objetos.
 // Recibe un vector con todos los objetos por dibujar.
 /* static */int GraphicObject::drawEveryBezierTest(vector <GraphicObject> object_list){
-    // Para la perspectiva en que vemos el sistema.
-    // Con eye cambiamos la perspectiva desde la que nosotros lo vemos.
-    arma::frowvec eye = {0.0, 0.0, 10.0};
-    arma::frowvec camera = {0.0, 0.0, 0.0};
-    arma::frowvec view_up = {0.0, 1.0, 0.0};
+
     GLFWwindow* window;
 
     if( !glfwInit() )
@@ -360,12 +397,30 @@ int GraphicObject::drawBezier(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    glfwSetKeyCallback(window, keyCallback);
 
     do {
         glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
 
+        float ratio;
+        int width, height;
+        glfwGetFramebufferSize(window, &width, &height);
+        ratio = width / float(height);
+        glViewport(0, 0, width, height);
+
+        glEnable(GL_DEPTH_TEST); //surface transparency
+        glDepthFunc(GL_LESS);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glFrustum(-ratio, ratio, -ratio, ratio, 1.0f, 40.0f);
+
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
+
+        //display
+        glTranslated(0.0f, 0.0f, -4.0f);
+        glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f);
         gluLookAt(eye[0], eye[1], eye[2],
                camera[0], camera[1], camera[2],
                view_up[0], view_up[1], view_up[2]);
@@ -373,6 +428,7 @@ int GraphicObject::drawBezier(){
         // Para dibujar la prueba con Bézier.
 
         object_list[0].drawBezier();
+        object_list[1].drawObject();
         // object_list[0].drawObject();
         // drawEveryObject(object_list);
 
@@ -386,4 +442,40 @@ int GraphicObject::drawBezier(){
 
     // Si termina todo bien, regresar un 0 para indicarlo.
     return 0;
+}
+
+// IMPLEMENTACIÓN PARA MOVER LA CÁMARA.
+static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    if (action == GLFW_PRESS) {
+        switch (key) {
+            case GLFW_KEY_ESCAPE:
+                glfwSetWindowShouldClose(window, GL_TRUE);
+                break;
+
+            case GLFW_KEY_UP: //up
+                eye[1] += 1;
+                break;
+
+            case GLFW_KEY_DOWN: //down
+                eye[1] -= 1;
+                break;
+
+            case GLFW_KEY_RIGHT: //right
+                eye[0] += 1;
+                break;
+
+            case GLFW_KEY_LEFT: // left
+                eye[0] -= 1;
+                break;
+
+            case GLFW_KEY_SPACE: //space
+                eye[2] = eye[1]= eye[0]= 1.0f;
+                break;
+
+            case GLFW_KEY_R: //R
+                cameraAngle+=20;
+                break;
+
+        }
+    }
 }
