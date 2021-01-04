@@ -6,6 +6,11 @@
 #include <iostream>
 #include <fstream>
 #include <random> // Para colores aleatorios.
+// In order to call rand or srand you must #include <cstdlib>
+#include <cstdlib>
+// In order to call time, you must #include <ctime>
+#include <ctime>
+
 #include "graphic_object.hpp"
 
 using namespace std;
@@ -28,26 +33,29 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 
 GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
-                            float _distance, float _speed, float _size,
+                            float _initialX, float _speed, float _size,
                             float _colorR, float _colorG, float _colorB){
     objFileInfo = _objFileInfo;
     scaleMultiplier = _scaleMultiplier;
-    distance = _distance;
+    initialX = _initialX;
     speed = _speed;
     size = _size;
     colorR = _colorR;
     colorG = _colorG;
     colorB = _colorB;
     angle = 0.0f;
-
+    /*  "seed" the random number generator by calling srand(). This should be done
+        once during your program's run -- not once every time you call rand(). This is
+        often done like this:*/
+    srand (static_cast <unsigned> (time(0)));
     /*
     BezierCurves(float _initialX, float _initialY, float _initialSpeed,
                  float _speedAngle, int _numberOfBounces, float gravity,
                  float _yMax, float _dt);
     */
-    bezier = BezierCurves(distance, 0.0, speed,
+    bezier = BezierCurves(initialX, 0.0, speed,
                           70, 6, 9.8,
-                          1.0, 0.02);
+                          1.0, 0.05f);
     bezier.calculateVertices(); // Calcular los vértices.
     for(int i = 0; i < bezier.getVertices().size(); i++){
         // // cout << bezier.getVertices()[i][0] << ", " << bezier.getVertices()[i][1] << ", " << bezier.getVertices()[i][2] << endl;
@@ -67,7 +75,7 @@ arma::fmat GraphicObject::getObjectTransform(){
     arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     // Se aplica la transformación completa. El orden de las multiplicaciones importa.
     transform =   Transform::Rotation(0.0f, 1.0f, 0.0f, angle)
-                * Transform::Translation(distance, 0.0, 0.0)
+                * Transform::Translation(initialX, 0.0, 0.0)
                 * Transform::Scale(size, size, size)
                 * transform;
     return transform;
@@ -189,20 +197,36 @@ arma::fmat GraphicObject::getObjectTransform(){
         // Ver si se presionó la tecla enter.
 
         // Ver si se presionó backspace + enter.
-        if(was_shift_pressed){
-            // GraphicObject basketball = object_list[0];
-            object_list.push_back(auxObject2);
+        if(was_shift_pressed || was_enter_pressed){
+            if(was_shift_pressed){
+                // GraphicObject basketball = object_list[0];
+                object_list.push_back(auxObject2);
+                was_shift_pressed = false;
+            }
+            else{
+                // GraphicObject basketball = object_list[0];
+                object_list.push_back(auxObject);
+                was_enter_pressed = false;
+            }
             // Generar 3 colores aleatorios (RGB) del 0 al 1.
             object_list[ object_list.size() - 1 ].setColors(distr(gen), distr(gen), distr(gen));
+            // Cambiar en un rango del 0.1 al 0.7 el tamaño del objeto.
+            /* FUENTE: https://stackoverflow.com/questions/686353/random-float-number-generation
+                float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
 
-            was_shift_pressed = false;
-        }
-        if(was_enter_pressed){
-            // GraphicObject basketball = object_list[0];
-            object_list.push_back(auxObject);
-            // Generar 3 colores aleatorios (RGB) del 0 al 1.
-            object_list[ object_list.size() - 1 ].setColors(distr(gen), distr(gen), distr(gen));
-            was_enter_pressed = false;
+                Before calling rand(), you must first "seed" the random number
+                generator by calling srand(). This should be done once during
+                your program's run -- not once every time you call rand(). This
+                is often done like this:
+
+                    srand (static_cast <unsigned> (time(0)));
+
+                - In order to call rand or srand you must #include <cstdlib>.
+
+                - In order to call time, you must #include <ctime>.
+            */
+            float size = 0.1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX / (0.7 - 0.1)));
+            object_list[ object_list.size() - 1 ].setSize(size);
         }
         // Dibujar TODOS LOS OBJETOS.
         for(int i = 0; i < object_list.size(); i++){

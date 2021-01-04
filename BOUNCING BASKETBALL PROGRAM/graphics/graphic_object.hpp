@@ -21,7 +21,7 @@ class GraphicObject{
         // En donde se guardará la info del OBJ.
         Object objFileInfo;
         float scaleMultiplier = 0.0f;
-        float distance = 0.0f;
+        float initialX = 0.0f;
     	float speed = 0.0f;
     	float size = 0.0f;
         float angle = 0.0f;
@@ -43,7 +43,7 @@ class GraphicObject{
         // Constructor vacío para no tener problemas.
         GraphicObject() {}
         GraphicObject(Object _objFileInfo, float _scaleMultiplier,
-                      float _distance, float _speed, float _size,
+                      float _initialX, float _speed, float _size,
                       float _colorR, float _colorG, float _colorB);
         void drawObject(); // Para mostrar el objeto en pantalla.
         // Para obtener la transformación del objeto.
@@ -71,6 +71,10 @@ class GraphicObject{
             colorR = _colorR;
             colorG = _colorG;
             colorB = _colorB;
+        }
+        // Para cambiar el tamaño del objeto.
+        void setSize(float _size){
+            size = _size;
         }
         // // Vector de objetos GraphicObject.
         // static std::vector <GraphicObject> get_object_list(){
