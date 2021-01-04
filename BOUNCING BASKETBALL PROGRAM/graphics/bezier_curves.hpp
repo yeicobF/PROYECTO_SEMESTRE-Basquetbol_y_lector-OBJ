@@ -15,15 +15,30 @@
 
 class BezierCurves{
     private:
-        // No necesitaremos instanciar.
-        BezierCurves() {}
+        int numberOfBounces; // Número de saltos que dará la pelota.
+        // Número del salto actual.
+        int currentBounce;
+        // Valores máximos para x y y del salto actual.
+        float currentBounceMaxX, currentBounceMaxY;
+        float xMax, yMax; // y y x máximos.
+        // Valor inicial para x y y, además de la velocidad inicial.
+        float initialX, initialY, initialSpeed;
+        float gravity;
+        float speedAngle;
+        float dt;
+        // Matriz de Bézier. Constante.
+        arma::fmat MB;
+        // Estas serán las coordenadas del objeto.
+        // Se debe guardar la Qt en un Vertex, y sacar sus coordenadas homogéneas.
+        vector <arma::frowvec> Qt;
     public:
+        // No necesitaremos instanciar.
+        BezierCurves(float _initialX, float _initialY, float _initialSpeed,
+                     float _speedAngle, float _numberOfBounces, float gravity,
+                     float _yMax, float _dt);
+        void calculateVertices();
         // Devuelve un arreglo con los n vértices.
-        static std::vector <arma::frowvec>
-            getVertices(float initialX, float initialSpeed, float speedAngle,
-                        // yCurve es un arreglo de la y en el primer PC y en el
-                        // segundo PC.
-                        float gravity, float yCurve[2], float dt);
+        std::vector <arma::frowvec> getVertices();
 };
 
 #endif

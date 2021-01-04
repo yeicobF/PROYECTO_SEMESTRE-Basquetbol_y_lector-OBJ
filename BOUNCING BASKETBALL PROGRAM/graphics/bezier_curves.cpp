@@ -5,32 +5,53 @@
 
 using namespace std;
 
-// Método para obtener los vértices de las curvas de Bézier.
-/* static */vector <arma::frowvec>
-                BezierCurves::getVertices(float initialX, float initialSpeed,
-                                          float speedAngle, float gravity,
-                                          float yCurve[2], float dt){
-    // Hay que calcular la X máxima de acuerdo a los parámetros.
-    float xMax = (pow(initialSpeed, 2) * sin(2 * speedAngle)) / gravity + initialX;
-    xMax = fabs(xMax);
 
+BezierCurves::BezierCurves(float _initialX, float _initialY, float _initialSpeed,
+                            float _speedAngle, float _numberOfBounces, float gravity,
+                           float _yMax, float _dt){
+    initialX = _initialX;
+    initialY = _initialY;
+    initialSpeed = _initialSpeed;
+    speedAngle = _speedAngle;
+    // Número de saltos que dará la pelota.
+    numberOfBounces = _numberOfBounces;
+    // Número del salto actual.
+    currentBounce = 1;
+    dt = _dt;
+
+    // Hay que calcular la X máxima de acuerdo a los parámetros.
+    xMax = fabs((pow(initialSpeed, 2) * sin(2 * speedAngle)) / gravity + initialX);
+    yMax = _yMax;
     // Matriz de Bézier. Constante.
-    arma::fmat MB = {{-1, 3, -3, 1},
-      				 {3, -6, 3, 0},
-      				 {-3, 3, 0, 0},
-      				 {1, 0, 0, 0}};
+    MB = {{-1, 3, -3, 1},
+		  {3, -6, 3, 0},
+		  {-3, 3, 0, 0},
+		  {1, 0, 0, 0}};
+}
+
+// Método para obtener los vértices de las curvas de Bézier.
+void BezierCurves::calculateVertices(){
+
+    // Valores máximos para x y y del salto actual.
+    currentBounceMaxX = xMax / numberOfBounces * currentBounce;
+    // Aumentar eñ número del rebote actual.
+    // La altura máxima de y irá disminuyendo 1/4 de la altura máxima anterior.
+    currentBounceMaxY *= 0.75;
 
     // PUNTOS DE CONTROL.
     arma::frowvec P1 = {initialX, 0, 0};
     // 1/4 de trayectoria el primer PC.
-    arma::frowvec P2 = {xMax / 4, yCurve[0], 0};
+    arma::frowvec P2 = {currentBounceMaxX / 4, currentBounceMaxY, 0};
     // 3/4 de trayectoria el primer PC.
-    arma::frowvec P3 = {xMax / 4, yCurve[1], 0};
+    arma::frowvec P3 = {currentBounceMaxX / 4, currentBounceMaxY, 0};
     // // 1/4 de trayectoria el primer PC.
     // arma::frowvec P2 = {initialX / 4, yCurve[0], 0};
     // // 3/4 de trayectoria el primer PC.
     // arma::frowvec P3 = {initialX / 4 * 3, yCurve[1], 0};
-    arma::frowvec P4 = {xMax, 0, 0};
+    arma::frowvec P4 = {currentBounceMaxX, 0, 0};
+
+    // Establecer que ahora la X inicial será con la que se terminó aquí.
+    initialX = currentBounceMaxX;
 
     // MATRIZ DE PUNTOS DE CONTROL.
     arma::fmat GB(4, 3);
@@ -39,7 +60,7 @@ using namespace std;
     GB.row(2) = P3;
     GB.row(3) = P4;
 
-    vector <arma::frowvec> Qt;
+
 
     // Calcular LOS VÉRTICES DE LA CURVA.
     for(float t = 0.0, i = 0; t <= 1.0 + dt; t += dt, i++){
@@ -50,7 +71,9 @@ using namespace std;
     	Qt.push_back( T * MB * GB );
     	cout << "... t = " << t << " ... punto: " << Qt[i];
     }
-    // Estas serán las coordenadas del objeto.
-    // Se debe guardar la Qt en un Vertex, y sacar sus coordenadas homogéneas.
+}
+
+// Obtener el vector de vértices.
+vector <arma::frowvec> BezierCurves::getVertices(){
     return Qt;
 }

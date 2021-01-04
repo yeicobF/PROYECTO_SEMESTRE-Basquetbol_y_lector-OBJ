@@ -25,19 +25,21 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
     angle = 0.0f;
 
     /*
-    BezierCurves::getVertices(float initialX, float initialSpeed,
-                              float speedAngle, float gravity,
-                              float yCurve[2], float dt)
+    BezierCurves(float _initialX, float _initialY, float _initialSpeed,
+                 float _speedAngle, float _numberOfBounces, float gravity,
+                 float _yMax, float _dt);
     */
-    float yCurvesBezier[2] = {1.0, 1.0};
-    vector <arma::frowvec> auxVertices = BezierCurves::getVertices(distance,
-                                            speed, 45, 9.8, yCurvesBezier, 0.05);
-    for(int i = 0; i < auxVertices.size(); i++){
+    BezierCurves bezier = BezierCurves(distance, 0.0, speed,
+                                       45, 5, 9.8,
+                                       1.0, 0.05);
+    bezier.calculateVertices(); // Calcular los vértices.
+    for(int i = 0; i < bezier.getVertices().size(); i++)
         // cout << auxVertices[i][0] << ", " << auxVertices[i][1] << ", " << auxVertices[i][2] << endl;
         // Agregar los vértices al vector.
-        bezierTestVertices.push_back(Vertex(auxVertices[i][0], auxVertices[i][1], auxVertices[i][2]));
-    }
-    // cout << "\n Hola" << endl;
+        // bezier.getVertices()[Número de vértice][coordenada x, y, o z]
+        bezierTestVertices.push_back(Vertex(bezier.getVertices()[i][0],
+                                            bezier.getVertices()[i][1],
+                                            bezier.getVertices()[i][2]));
 }
 
 arma::fmat GraphicObject::getObjectTransform(){
@@ -197,8 +199,15 @@ void GraphicObject::drawObject(){
 void GraphicObject::drawBezierTest(){
 
     angle = (angle < 360.0f) ? angle + speed : 0.0f;
-    bezierTestIndex = (bezierTestIndex < bezierTestVertices.size() - 1) ? bezierTestIndex + 1 : 0;
-
+    // Si el índice no llega a su máximo, seguir aumentando.
+    if(bezierTestIndex < bezierTestVertices.size() - 1)
+        bezierTestIndex++;
+    else{
+        bezierTestIndex = 0;
+        bezier.calculateVertices();
+        bezierTestVertices = bezier.getVertices();
+    }
+    
     arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
     // Se aplica la transformación completa. El orden de las multiplicaciones importa.
     // transform = Transform::Translation(bezierTestVertices[bezierTestIndex][0],
