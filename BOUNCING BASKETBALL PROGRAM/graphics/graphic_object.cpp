@@ -17,11 +17,12 @@ float cameraAngle = 0.0f;
 arma::frowvec eye = {0.0, 0.0, 10.0};
 arma::frowvec camera = {0.0, 0.0, 0.0};
 arma::frowvec view_up = {0.0, 1.0, 0.0};
+int view = 1;
 
 /* FUNCIÓN PARA MOVER LA CÁMARA.
     - FUENTE: https://github.com/Alzahraa-Ahmed/Computer-Graphics-OpenGL-Assignment-2--Hello-GLFW/blob/master/main.cpp*/
 // Prototipo.
-static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 
 GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
@@ -128,43 +129,56 @@ arma::fmat GraphicObject::getObjectTransform(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    int count = 0;
+    // int count = 0;
 
-    glfwSetKeyCallback(window, keyCallback);
+    // glfwSetKeyCallback(window, keyCallback);
     // Booleano para dibujar el balón.
     bool drawBall = true;
     do {
-        // glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
+       //  // glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
+       // //
+       // // float ratio;
+       // // int width, height;
+       // // glfwGetFramebufferSize(window, &width, &height);
+       // // ratio = width / float(height);
+       // // glViewport(0, 0, width, height);
+       // //
+       // // glEnable(GL_DEPTH_TEST); //surface transparency
+       // // glDepthFunc(GL_LESS);
+       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+       // glMatrixMode(GL_PROJECTION);
+       // // glLoadIdentity();
+       // // glFrustum(-ratio, ratio, -ratio, ratio, 2.0f, 40.0f);
        //
-       // float ratio;
-       // int width, height;
-       // glfwGetFramebufferSize(window, &width, &height);
-       // ratio = width / float(height);
-       // glViewport(0, 0, width, height);
-       //
-       // glEnable(GL_DEPTH_TEST); //surface transparency
-       // glDepthFunc(GL_LESS);
-       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-       glMatrixMode(GL_PROJECTION);
+       // glMatrixMode(GL_MODELVIEW);
        // glLoadIdentity();
-       // glFrustum(-ratio, ratio, -ratio, ratio, 2.0f, 40.0f);
+       //
+       // //display
+       // // glTranslated(0.0f, 0.0f, -4.0f);
+       // glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f);
+       // gluLookAt(eye[0], eye[1], eye[2],
+       //        camera[0], camera[1], camera[2],
+       //        view_up[0], view_up[1], view_up[2]);
 
-       glMatrixMode(GL_MODELVIEW);
-       glLoadIdentity();
 
-       //display
-       // glTranslated(0.0f, 0.0f, -4.0f);
-       glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f);
-       gluLookAt(eye[0], eye[1], eye[2],
-              camera[0], camera[1], camera[2],
-              view_up[0], view_up[1], view_up[2]);
 
+        glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        gluLookAt(eye[0], eye[1], eye[2],
+                  camera[0], camera[1], camera[2],
+                  view_up[0],view_up[1],view_up[2]);
+
+      	glfwSetKeyCallback(window, key_callback);
        // Para dibujar la prueba con Bézier.
 
        // object_list[0].drawBezier();
        // object_list[1].drawObject();
        // object_list[0].drawObject();
        // drawEveryObject(object_list);
+
+       /* -> SI SE PRESIONA ENTER, GENERAR UN NUEVO BALÓN.*/
 
         // object_list[0].drawObject();
         // drawEveryObject(object_list);
@@ -186,6 +200,7 @@ arma::fmat GraphicObject::getObjectTransform(){
                 drawBall = true;
                 break;
             }
+
         glfwSwapBuffers(window);
         glfwPollEvents();
 
@@ -350,6 +365,30 @@ void GraphicObject::drawObject(){
 }
 
 // IMPLEMENTACIÓN PARA MOVER LA CÁMARA.
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
+    // La vista inicial.
+    // Al presionar 1.
+	if(key == GLFW_KEY_1 && action == GLFW_PRESS){
+        eye = {0.0, 0.0, 10.0};
+        camera = {0.0, 0.0, 0.0};
+        view_up = {0.0, 1.0, 0.0};
+    	view = 1;
+
+	}
+    // Al presionar 2 se invierte la vista.
+	if(key == GLFW_KEY_2 && action == GLFW_PRESS){
+    	eye = {0.0, 0.0, -1.0};
+    	view = 2;
+
+	}
+    // Al presionar 3 se ve desde abajo (o arriba, no estoy seguro).
+	if(key == GLFW_KEY_3 && action == GLFW_PRESS){
+    	eye = {0.0, 10.0, 0.0};
+    	view_up = {0.0, 0.0, -1.0};
+    	view = 3;
+	}
+}
+
 /*
     R : to rotate the shape about y-axes
     Right Arrow : move camera position in +ve X axes
@@ -358,39 +397,39 @@ void GraphicObject::drawObject(){
     Down Arrow : move camera position in -ve Y axes
     Space : returns camera  to original position.
 */
-static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    if (action == GLFW_PRESS) {
-        switch (key) {
-            case GLFW_KEY_ESCAPE:
-                glfwSetWindowShouldClose(window, GL_TRUE);
-                break;
-
-            case GLFW_KEY_UP: //up
-                eye[1] += 1;
-                break;
-
-            case GLFW_KEY_DOWN: //down
-                eye[1] -= 1;
-                break;
-
-            case GLFW_KEY_RIGHT: //right
-                eye[0] += 1;
-                break;
-
-            case GLFW_KEY_LEFT: // left
-                eye[0] -= 1;
-                break;
-
-            case GLFW_KEY_SPACE: //space
-                    eye[0] = 0.0;
-                    eye[1] = 0.0;
-                    eye[2] = 10.0;
-                break;
-
-            case GLFW_KEY_R: //R
-                cameraAngle+=20;
-                break;
-
-        }
-    }
-}
+// static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+//     if (action == GLFW_PRESS) {
+//         switch (key) {
+//             case GLFW_KEY_ESCAPE:
+//                 glfwSetWindowShouldClose(window, GL_TRUE);
+//                 break;
+//
+//             case GLFW_KEY_UP: //up
+//                 eye[1] += 1;
+//                 break;
+//
+//             case GLFW_KEY_DOWN: //down
+//                 eye[1] -= 1;
+//                 break;
+//
+//             case GLFW_KEY_RIGHT: //right
+//                 eye[0] += 1;
+//                 break;
+//
+//             case GLFW_KEY_LEFT: // left
+//                 eye[0] -= 1;
+//                 break;
+//
+//             case GLFW_KEY_SPACE: //space
+//                     eye[0] = 0.0;
+//                     eye[1] = 0.0;
+//                     eye[2] = 10.0;
+//                 break;
+//
+//             case GLFW_KEY_R: //R
+//                 cameraAngle+=20;
+//                 break;
+//
+//         }
+//     }
+// }
