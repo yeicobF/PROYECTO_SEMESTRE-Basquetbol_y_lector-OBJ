@@ -25,7 +25,7 @@ arma::frowvec view_up = {0.0, 1.0, 0.0};
 // Booleano para ver si se presionó enter.
 bool was_enter_pressed = false;
 // Para ver si se presionó backspace.
-bool was_shift_pressed = false;
+bool was_backspace_pressed = false;
 /* FUNCIÓN PARA MOVER LA CÁMARA.
     - FUENTE: https://github.com/Alzahraa-Ahmed/Computer-Graphics-OpenGL-Assignment-2--Hello-GLFW/blob/master/main.cpp*/
 // Prototipo.
@@ -89,7 +89,9 @@ arma::fmat GraphicObject::getObjectTransform(){
     GraphicObject auxObject = object_list[0];
     // Para generar un balón desde la derecha.
     GraphicObject auxObject2 = object_list[1];
-
+    /*FUENTE DE LOS NÚMEROS ALEATORIOS:
+        https://stackoverflow.com/questions/7560114/random-number-c-in-some-range
+    */
     // Se asignan colores aleatorios para distinguir los balones.
     std::random_device rd; // obtain a random number from hardware
     std::mt19937 gen(rd()); // seed the generator
@@ -197,11 +199,11 @@ arma::fmat GraphicObject::getObjectTransform(){
         // Ver si se presionó la tecla enter.
 
         // Ver si se presionó backspace + enter.
-        if(was_shift_pressed || was_enter_pressed){
-            if(was_shift_pressed){
+        if(was_backspace_pressed || was_enter_pressed){
+            if(was_backspace_pressed){
                 // GraphicObject basketball = object_list[0];
                 object_list.push_back(auxObject2);
-                was_shift_pressed = false;
+                was_backspace_pressed = false;
             }
             else{
                 // GraphicObject basketball = object_list[0];
@@ -454,7 +456,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     if(key == GLFW_KEY_ENTER && action == GLFW_PRESS)
         was_enter_pressed = true;
     if(key == GLFW_KEY_BACKSPACE && action == GLFW_PRESS)
-        was_shift_pressed = true;
+        was_backspace_pressed = true;
 }
 
 /*
