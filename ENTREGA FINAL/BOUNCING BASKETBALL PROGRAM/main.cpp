@@ -7,17 +7,14 @@ para tener el código más limpio, y ordenado. */
 
 /*
  - Francisco Jacob Flores Rodríguez
- - Lunes, 14 - 15, 16, Jueves, 17 de septiembre del 2020
- - Domingo, 4 - Lunes, 5 de octubre del 2020
+ 
  - GRAFICACIÓN POR COMPUTADORA, 5to SEMESTRE
  - PROYECTO SEMESTRAL [1er a 4to PARCIAL]
+ 
  - ANIMACIÓN DE BALÓN REBOTANDO, UTILIZANDO CURVAS DE BÉZIER.
 
- - TERMINADO EL: Lunes, 4 de enero del 2021 [05:37AM]
- - TERMINADO DE LIMPIAR EL CÓDIGO: Lunes, 4 de enero del 2021 [06:54AM]
-    * Con esto me refiero a que solo dejé comentarios que creo necesarios o
-        útiles para un futuro. Además, quité código que no servía o no
-        utilizaba.
+ - Solo dejé comentarios que creo necesarios o útiles para un futuro.
+ 
  */
 
 int main(){
@@ -26,6 +23,7 @@ int main(){
     /* Se instancia el objeto con el nombre del archivo para que lo lea y
         encuentre el número de caras, los vértices, aristas, etcétera. */
     Object objBasketBall = Object("modelsOBJ/OrangeCartoon_basketball_ball_OBJ.obj");
+    
     // Se guarda el objeto en memoria con lo indicado anteriormente.
     objBasketBall.saveObject();
     // Así se puede imprimir la información obtenida.
