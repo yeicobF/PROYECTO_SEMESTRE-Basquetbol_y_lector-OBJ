@@ -17,7 +17,6 @@ float cameraAngle = 0.0f;
 arma::frowvec eye = {0.0, 0.0, 10.0};
 arma::frowvec camera = {0.0, 0.0, 0.0};
 arma::frowvec view_up = {0.0, 1.0, 0.0};
-int view = 1;
 // Booleano para ver si se presionó enter.
 bool was_enter_pressed = false;
 // Para ver si se presionó backspace.
@@ -193,14 +192,13 @@ arma::fmat GraphicObject::getObjectTransform(){
             object_list.push_back(auxObject);
             was_enter_pressed = false;
         }
-        // Dibujar los nuevos agregados.
-        if(object_list.size() > 2)
-            for(int i = 2; i < object_list.size(); i++){
-                // Revisar si aún se puede dibujar el objeto.
-                if(object_list[i].isObjectDrawable())
-                    if(object_list[i].drawBezier() == 1)
-                        object_list[i].setObjectNotDrawable();
-            }
+        // Dibujar TODOS LOS OBJETOS.
+        for(int i = 0; i < object_list.size(); i++){
+            // Revisar si aún se puede dibujar el objeto.
+            if(object_list[i].isObjectDrawable())
+                if(object_list[i].drawBezier() == 1)
+                    object_list[i].setObjectNotDrawable();
+        }
 
        // Para dibujar la prueba con Bézier.
 
@@ -213,24 +211,24 @@ arma::fmat GraphicObject::getObjectTransform(){
 
         // object_list[0].drawObject();
         // drawEveryObject(object_list);
-        if(drawBall){ // Ver si se puede seguir dibujando la pelota.
-            if(object_list[0].drawBezier() == 1){
-                // Esperar a que presione enter.
-                // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
-                // object_list.push_back(object_list[count]);
-                // count++;
-                drawBall = false;
-            }
-        }
-        else
-            if(object_list[1].drawBezier() == 1){
-                // Esperar a que presione enter.
-                // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
-                // object_list.push_back(object_list[count]);
-                // count++;
-                drawBall = true;
-                break;
-            }
+        // if(drawBall){ // Ver si se puede seguir dibujando la pelota.
+        //     if(object_list[0].drawBezier() == 1){
+        //         // Esperar a que presione enter.
+        //         // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
+        //         // object_list.push_back(object_list[count]);
+        //         // count++;
+        //         drawBall = false;
+        //     }
+        // }
+        // else
+        //     if(object_list[1].drawBezier() == 1){
+        //         // Esperar a que presione enter.
+        //         // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
+        //         // object_list.push_back(object_list[count]);
+        //         // count++;
+        //         drawBall = true;
+        //         break;
+        //     }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -398,25 +396,24 @@ void GraphicObject::drawObject(){
 // IMPLEMENTACIÓN PARA MOVER LA CÁMARA, Y GENERAR NUEVO OBJETO.
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
     // La vista inicial.
-    // Al presionar 1.
-	if(key == GLFW_KEY_1 && action == GLFW_PRESS){
+    // Al presionar O (de Opening, por ser la primera).
+	if(key == GLFW_KEY_O && action == GLFW_PRESS){
         eye = {0.0, 0.0, 10.0};
         camera = {0.0, 0.0, 0.0};
         view_up = {0.0, 1.0, 0.0};
-    	view = 1;
 
 	}
-    // Al presionar 2 se invierte la vista.
-	if(key == GLFW_KEY_2 && action == GLFW_PRESS){
+	// if(key == GLFW_KEY_Z && action == GLFW_PRESS){
+    //     eye = {0.0, 0.0, 10.0};
+	// }
+    // Al presionar I se invierte la vista.
+	if(key == GLFW_KEY_I && action == GLFW_PRESS){
     	eye = {0.0, 0.0, -1.0};
-    	view = 2;
-
 	}
-    // Al presionar 3 se ve desde abajo (o arriba, no estoy seguro).
-	if(key == GLFW_KEY_3 && action == GLFW_PRESS){
+    // Al presionar D se ve desde abajo (o arriba, no estoy seguro).
+	if(key == GLFW_KEY_D && action == GLFW_PRESS){
     	eye = {0.0, 10.0, 0.0};
     	view_up = {0.0, 0.0, -1.0};
-    	view = 3;
 	}
     if(key == GLFW_KEY_ENTER && action == GLFW_PRESS)
         was_enter_pressed = true;
