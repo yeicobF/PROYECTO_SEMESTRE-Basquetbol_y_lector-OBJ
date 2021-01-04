@@ -118,9 +118,9 @@ arma::fmat GraphicObject::getObjectTransform(){
 
     float ar = width / height;
 
-    //  Proyección en paralelo
-    glViewport(0, 0, width, height);
-    glOrtho(-ar, ar, -1.0, 1.0, -20.0, 20.0);
+    // //  Proyección en paralelo
+    // glViewport(0, 0, width, height);
+    // glOrtho(-ar, ar, -1.0, 1.0, -20.0, 20.0);
 
     //  Proyección en perspectiva
     //glFrustum(-ar, ar, -ar, ar, 2.0, 4.0);
@@ -134,7 +134,7 @@ arma::fmat GraphicObject::getObjectTransform(){
     // Booleano para dibujar el balón.
     bool drawBall = true;
     do {
-        glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
+        // glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
 
        float ratio;
        int width, height;
@@ -147,7 +147,7 @@ arma::fmat GraphicObject::getObjectTransform(){
        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
        glMatrixMode(GL_PROJECTION);
        glLoadIdentity();
-       glFrustum(-ratio, ratio, -ratio, ratio, 1.0f, 40.0f);
+       glFrustum(-ratio, ratio, -ratio, ratio, 2.0f, 40.0f);
 
        glMatrixMode(GL_MODELVIEW);
        glLoadIdentity();

@@ -36,16 +36,16 @@ int main(){
                                 float _distance, float _speed, float _size,
                                 float _colorR, float _colorG, float _colorB)
     */
-    GraphicObject basketball = GraphicObject(objBasketBall, 0.5,
-                                             -0.9f, 1.0f, 0.3f,
+    GraphicObject basketball = GraphicObject(objBasketBall, 2.0f,
+                                             -0.9f, 1.0f, 1.0f,
                                              1.0f, 0.0f, 0.0f);
 
     object_list.push_back(basketball);
 
     Object objReference = Object("modelsOBJ/roca.obj");
     objReference.saveObject();
-    GraphicObject referenceObject = GraphicObject(objBasketBall, 1,
-                                             0.0f, 5.0f, 0.5f,
+    GraphicObject referenceObject = GraphicObject(objBasketBall, 2.0f,
+                                             0.0f, 5.0f, 1.0f,
                                              1.0f, 0.5f, 0.0f);
     object_list.push_back(referenceObject);
     // Regresa -1 si ocurre algún error.
