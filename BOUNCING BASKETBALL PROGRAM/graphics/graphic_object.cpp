@@ -31,12 +31,13 @@ arma::frowvec view_up = {0.0, 1.0, 0.0};
 bool was_enter_pressed = false;
 // Para ver si se presionó backspace.
 bool was_backspace_pressed = false;
-/* FUNCIÓN PARA MOVER LA CÁMARA.
-    - FUENTE: https://github.com/Alzahraa-Ahmed/Computer-Graphics-OpenGL-Assignment-2--Hello-GLFW/blob/master/main.cpp*/
-// Prototipo.
+
+
+/* Prototipo de función que detecta las teclas, para así mover la cámara y
+    agregar balones. */
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-
+// Constructor con los parámetros necesarios para los objetos.
 GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                             float _initialX, float _speed, float _size,
                             float _colorR, float _colorG, float _colorB){
@@ -63,15 +64,14 @@ GraphicObject::GraphicObject(Object _objFileInfo, float _scaleMultiplier,
                           1.0, 0.05f);
     bezier.calculateVertices(); // Calcular los vértices.
     for(int i = 0; i < bezier.getVertices().size(); i++){
-        // // cout << bezier.getVertices()[i][0] << ", " << bezier.getVertices()[i][1] << ", " << bezier.getVertices()[i][2] << endl;
         // Agregar los vértices al vector.
         // bezier.getVertices()[Número de vértice][coordenada x, y, o z]
-        bezierTestVertices.push_back(Vertex(bezier.getVertices()[i][0],
+        bezierCurveVertices.push_back(Vertex(bezier.getVertices()[i][0],
                                             bezier.getVertices()[i][1],
                                             bezier.getVertices()[i][2]));
     }
     // Si inicializo a -1 la comparación no funciona bien.
-    bezierTestIndex = 0;
+    bezierCurveVertexIndex = 0;
 }
 
 arma::fmat GraphicObject::getObjectTransform(){
@@ -89,7 +89,8 @@ arma::fmat GraphicObject::getObjectTransform(){
 // Para hacer TODO el proceso de dibujado de los objetos.
 // Recibe un vector con todos los objetos por dibujar.
 /* static */int GraphicObject::animateObjects(vector <GraphicObject> object_list){
-    // Auxiliar del objeto sin modificar.
+    /* Auxiliaes de los objetos sin modificar, para cuando se generen los
+        balones. */
     // Para generar un balón desde la izquierda.
     GraphicObject auxObject = object_list[0];
     // Para generar un balón desde la derecha.
@@ -103,7 +104,6 @@ arma::fmat GraphicObject::getObjectTransform(){
     // Los colres van del 0 al 1, por lo que será el rango.
     std::uniform_int_distribution<> distr(0, 1); // define the range
 
-    // object_list = _object_list;
     // Para la perspectiva en que vemos el sistema.
     // Con eye cambiamos la perspectiva desde la que nosotros lo vemos.
     eye = {0.0, 0.0, 10.0};
@@ -159,66 +159,44 @@ arma::fmat GraphicObject::getObjectTransform(){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    int count = 2;
-
-    // glfwSetKeyCallback(window, keyCallback);
-    // Booleano para dibujar el balón.
-    bool drawBall = true;
     do {
-       //  // glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
-       // //
-       // // float ratio;
-       // // int width, height;
-       // // glfwGetFramebufferSize(window, &width, &height);
-       // // ratio = width / float(height);
-       // // glViewport(0, 0, width, height);
-       // //
-       // // glEnable(GL_DEPTH_TEST); //surface transparency
-       // // glDepthFunc(GL_LESS);
-       // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-       // glMatrixMode(GL_PROJECTION);
-       // // glLoadIdentity();
-       // // glFrustum(-ratio, ratio, -ratio, ratio, 2.0f, 40.0f);
-       //
-       // glMatrixMode(GL_MODELVIEW);
-       // glLoadIdentity();
-       //
-       // //display
-       // // glTranslated(0.0f, 0.0f, -4.0f);
-       // glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f);
-       // gluLookAt(eye[0], eye[1], eye[2],
-       //        camera[0], camera[1], camera[2],
-       //        view_up[0], view_up[1], view_up[2]);
-
-
-
-        glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
+       glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
 
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        gluLookAt(eye[0], eye[1], eye[2],
-                  camera[0], camera[1], camera[2],
-                  view_up[0],view_up[1],view_up[2]);
+        gluLookAt(    eye[0],     eye[1],     eye[2],
+                   camera[0],  camera[1],  camera[2],
+                  view_up[0], view_up[1], view_up[2]);
 
+        /* FUNCIÓN CON LA QUE SE EVALUARÁN LAS TECLAS QUE SE PRESIONEN.
+            O: Volver a la cámara inicial.
+            I: Invertir la cámara.
+            D: Poner la pespectiva de la cámara desde abajo (o arriba, no estoy
+                seguro).
+            -------- GENERAR BALONES -------------------------------------------
+            - Los balones se generan con un color y tamaño aleatorios.
+            ENTER: Genera un balón desde la izquierda de la pantalla.
+            BACKSPACE (Retroceso): Genera un balón desde la derecha de la
+                                    pantalla. */
       	glfwSetKeyCallback(window, key_callback);
-        // Ver si se presionó la tecla enter.
 
-        // Ver si se presionó backspace + enter.
+        /* Ver si se presionó la tecla de retroceso o enter para agregar u
+            balón a la lista.
+           - Indicar que se dejó de presionar la tecla que haya sido.
+        */
         if(was_backspace_pressed || was_enter_pressed){
             if(was_backspace_pressed){
-                // GraphicObject basketball = object_list[0];
                 object_list.push_back(auxObject2);
                 was_backspace_pressed = false;
             }
-            else{
-                // GraphicObject basketball = object_list[0];
+            else{ // Si no, signfica que se presionó enter.
                 object_list.push_back(auxObject);
                 was_enter_pressed = false;
             }
             // Generar 3 colores aleatorios (RGB) del 0 al 1.
             object_list[ object_list.size() - 1 ].setColors(distr(gen), distr(gen), distr(gen));
-            // Cambiar en un rango del 0.1 al 0.7 el tamaño del objeto.
             /* FUENTE: https://stackoverflow.com/questions/686353/random-float-number-generation
+
                 float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
 
                 Before calling rand(), you must first "seed" the random number
@@ -232,6 +210,7 @@ arma::fmat GraphicObject::getObjectTransform(){
 
                 - In order to call time, you must #include <ctime>.
             */
+            // Cambiar en un rango del 0.1 al 0.7 el tamaño del objeto.
             float size = 0.1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX / (0.7 - 0.1)));
             object_list[ object_list.size() - 1 ].setSize(size);
         }
@@ -239,44 +218,15 @@ arma::fmat GraphicObject::getObjectTransform(){
         for(int i = 0; i < object_list.size(); i++){
             // Revisar si aún se puede dibujar el objeto.
             if(object_list[i].isObjectDrawable())
+                /* Si el método regresa 1, significa que ya se dibujaron todos
+                    los rebotes, por lo que hay que indicar que ya no se puede
+                    dibujar el objeto. */
                 if(object_list[i].drawBezier() == 1)
                     object_list[i].setObjectNotDrawable();
         }
 
-       // Para dibujar la prueba con Bézier.
-
-       // object_list[0].drawBezier();
-       // object_list[1].drawObject();
-       // object_list[0].drawObject();
-       // drawEveryObject(object_list);
-
-       /* -> SI SE PRESIONA ENTER, GENERAR UN NUEVO BALÓN.*/
-
-        // object_list[0].drawObject();
-        // drawEveryObject(object_list);
-        // if(drawBall){ // Ver si se puede seguir dibujando la pelota.
-        //     if(object_list[0].drawBezier() == 1){
-        //         // Esperar a que presione enter.
-        //         // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
-        //         // object_list.push_back(object_list[count]);
-        //         // count++;
-        //         drawBall = false;
-        //     }
-        // }
-        // else
-        //     if(object_list[1].drawBezier() == 1){
-        //         // Esperar a que presione enter.
-        //         // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
-        //         // object_list.push_back(object_list[count]);
-        //         // count++;
-        //         drawBall = true;
-        //         break;
-        //     }
-
         glfwSwapBuffers(window);
         glfwPollEvents();
-
-        // Para dibujar la prueba con Bézier.
 
     } while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS
         && glfwWindowShouldClose(window) == 0 );
@@ -287,79 +237,75 @@ arma::fmat GraphicObject::getObjectTransform(){
     return 0;
 }
 
-// Para probar las curvas de Bézier. Regresa 1 si ya se dibujaron los rebotes.
+// Método para dibujar los objetos con curvas de Bézier.
 int GraphicObject::drawBezier(){
+    /* Ir aumentando el índice del punto actual de la curva de Bézier,
+        hasta llegar al máximo. Esto se hace por cada rango de rebote,
+        es decir, desde que toca el piso y sube, hasta que lo vuelve
+        a tocar.
 
-    angle = (angle < 360.0f) ? angle + speed : 0.0f;
-    // // cout << "\n Hola" << endl;
-    // // Si el índice no llega a su máximo, seguir aumentando.
-    // // cout << "\n bezierTestVertices.size() = " << bezierTestVertices.size() << endl;
-    // // cout << "\n bezierTestIndex = " << bezierTestIndex << endl;
-    // // cout << "\nbezierTestIndex > (bezierTestVertices.size() - 1): " << (bezierTestIndex < (bezierTestVertices.size() - 1)) << endl;
-    // Me sale que -1 es mayor que los positivos.
-    // if(bezierTestIndex < (bezierTestVertices.size() - 1)){
-    if((bezierTestVertices.size() - bezierTestIndex) > 1){
-        bezierTestIndex++;
-        // // cout << "\n Hola 2" << endl;
-    }
+       - Puse la condición de esta forma, ya que inicializaba el índice como
+            un valor negativo, pero al comparar
+
+                -1 < número positivo
+
+            me regresaba false, así que mejor lo hice así. Al parecer tiene algo
+            que ver con el bit significativo.
+    */
+    if((bezierCurveVertices.size() - bezierCurveVertexIndex) > 1)
+        bezierCurveVertexIndex++;
+    /* Si ya dibujó al objeto en cada una de las posiciones del rebote, hay que
+        calcular el siguiente rebote y los vértices. */
     else{
-        // // cout << "\n Hola 4" << endl;
-        bezierTestIndex = 0;
+        // Reiniciar el índice.
+        bezierCurveVertexIndex = 0;
+        // Se vuelven a calcular los vértices.
         bezier.calculateVertices();
-        bezierTestVertices.clear();
+        // Se reinicia el vector de los vértices de la curva actual de Bézier.
+        bezierCurveVertices.clear();
+        /* Se agregan los vértices de la curva que se obtuvieron con
+            anterioridad, al vector de vértices de la curva actual. */
         for(int i = 0; i < bezier.getVertices().size(); i++)
             // Agregar los vértices al vector.
             // bezier.getVertices()[Número de vértice][coordenada x, y, o z]
-            bezierTestVertices.push_back(Vertex(bezier.getVertices()[i][0],
+            bezierCurveVertices.push_back(Vertex(bezier.getVertices()[i][0],
                                                 bezier.getVertices()[i][1],
                                                 bezier.getVertices()[i][2]));
     }
-    // // cout << "\n Hola 3" << endl;
-    arma::fmat transform = Transform::Scale(scaleMultiplier, scaleMultiplier, scaleMultiplier);
+
+    // Escalar respecto al multiplicador de escala del objeto.
+    arma::fmat transform = Transform::Scale(scaleMultiplier,
+                                            scaleMultiplier,
+                                            scaleMultiplier);
+
     // Se aplica la transformación completa. El orden de las multiplicaciones importa.
-    // transform = Transform::Translation(bezierTestVertices[bezierTestIndex][0],
-    //                                    bezierTestVertices[bezierTestIndex][1],
-    //                                    bezierTestVertices[bezierTestIndex][2])
-    //             * Transform::Scale(size, size, size)
-    //             * transform;
-
-    // // cout << "\n TRANSLATION: [Index = " << bezierTestIndex << ", "
-    //     << bezierTestVertices[bezierTestIndex].getVertex()[0] << ", "
-    //     << bezierTestVertices[bezierTestIndex].getVertex()[1] << ", "
-    //     << bezierTestVertices[bezierTestIndex].getVertex()[2] << endl;
-
-    transform =   Transform::Translation(bezierTestVertices[bezierTestIndex].getVertex()[0],
-                                        bezierTestVertices[bezierTestIndex].getVertex()[1],
-                                        bezierTestVertices[bezierTestIndex].getVertex()[2])
+    transform =   Transform::Translation(bezierCurveVertices[bezierCurveVertexIndex].getVertex()[0],
+                                        bezierCurveVertices[bezierCurveVertexIndex].getVertex()[1],
+                                        bezierCurveVertices[bezierCurveVertexIndex].getVertex()[2])
                 * Transform::Scale(size, size, size)
                 * transform;
-    // transform = Transform::Rotation(0.0f, 1.0f, 0.0f, angle)
-    //             * Transform::Translation(bezierTestVertices[bezierTestIndex][0],
-    //                                      bezierTestVertices[bezierTestIndex][1],
-    //                                      bezierTestVertices[bezierTestIndex][2])
-    //             * Transform::Scale(size, size, size)
-    //             * transform;
 
-
+    // Se obtienen TODOS los vértices del objeto.
     vector <Vertex> p_vertices = objFileInfo.getFacesVertices();
-
+    // Lista de vértices del objeto ya transformados.
     vector <Vertex> object_vertices;
     /* El número máximo de vértices para ver si se dibuja por triángulos
-        o por polígonos.*/
+        o por polígonos. */
     int maxVertexInFaces = 0;
     // El OBJ del balón de basket tiene 4 vértices por cara.
-    for ( unsigned int i=0; i<p_vertices.size(); i++ ) {
+    for ( unsigned int i = 0; i < p_vertices.size(); i++ ) {
+        // Se obtiene la coordenada homogénea del vértice actual.
         arma::fcolvec v = p_vertices[i].getHomogeneousCoordinates();
-        // // cout << "\n - V: " << v;
+        // Se aplica la transformación a la coordenada homogénea.
         arma::fcolvec vp = transform * v;
-        // // cout << "\n - VP: " << vp;
         Vertex rv = Vertex();
-        // // cout << "\n - rv: "; rv.printVertex();
+
         rv.setVertex(arma::trans(vp));
+        // Se agrega el vértice a la lista de vértices ya transformados.
         object_vertices.push_back(rv);
-        // // cout << "\n - cbvertex: " << object_vertices;
     }
 
+    
     for ( unsigned int i = 0; i < object_vertices.size(); i++ )
         if(object_vertices[i].getVertex().size() > maxVertexInFaces)
             maxVertexInFaces = object_vertices[i].getVertex().size();
@@ -394,7 +340,7 @@ void GraphicObject::drawObject(){
 
     vector <Vertex> object_vertices;
     /* El número máximo de vértices para ver si se dibuja por triángulos
-        o por polígonos.*/
+        o por polígonos. */
     int maxVertexInFaces = 0;
     // El OBJ del balón de basket tiene 4 vértices por cara.
     for ( unsigned int i=0; i<p_vertices.size(); i++ ) {
@@ -430,7 +376,7 @@ void GraphicObject::drawObject(){
     glEnd();
 }
 
-/* En un ciclo dibuja a cada uno de los objetos.*/
+/* En un ciclo dibuja a cada uno de los objetos. */
 /* static */void GraphicObject::drawEveryObject(vector <GraphicObject> objects){
     for(unsigned int i = 0; i < objects.size(); i++)
         objects[i].drawObject();

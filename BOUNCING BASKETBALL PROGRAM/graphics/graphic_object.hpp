@@ -30,9 +30,12 @@ class GraphicObject{
     	float colorR = 0.0f;
     	float colorG = 0.0f;
     	float colorB = 0.0f;
-        // Para hacer la prueba con Bezier.
-        std::vector <Vertex> bezierTestVertices;
-        int bezierTestIndex = -1;
+        /* Para hacer la prueba con Bezier. Es un vector con los vértices de la
+            curva de Bézier en la que se encuentra actualmente. */
+        std::vector <Vertex> bezierCurveVertices;
+        /* El número de vértice de la curva en la que se encuentra el rebote
+            actual. */
+        int bezierCurveVertexIndex = -1;
         // Para manejar las curvas de Bézier.
         BezierCurves bezier;
         // Variable que indica si se puede dibujar un balón.
