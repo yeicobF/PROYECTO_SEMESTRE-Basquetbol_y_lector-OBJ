@@ -36,19 +36,24 @@ int main(){
                                 float _distance, float _speed, float _size,
                                 float _colorR, float _colorG, float _colorB)
     */
-    GraphicObject basketball = GraphicObject(objBasketBall, 2.0f,
-                                             -0.9f, 1.0f, 1.0f,
+    GraphicObject basketball = GraphicObject(objBasketBall, 0.5f,
+                                             -0.9f, 2.0f, 0.5f,
                                              1.0f, 0.0f, 0.0f);
 
     object_list.push_back(basketball);
 
-    Object objReference = Object("modelsOBJ/roca.obj");
-    objReference.saveObject();
-    GraphicObject referenceObject = GraphicObject(objBasketBall, 2.0f,
-                                             0.0f, 5.0f, 1.0f,
-                                             1.0f, 0.5f, 0.0f);
-    object_list.push_back(referenceObject);
+    // Object objReference = Object("modelsOBJ/roca.obj");
+    // objReference.saveObject();
+    // GraphicObject referenceObject = GraphicObject(objBasketBall, 1.0f,
+    //                                          0.0f, 5.0f, 1.0f,
+    //                                          1.0f, 0.5f, 0.0f);
+    // object_list.push_back(referenceObject);
     // Regresa -1 si ocurre algún error.
+    GraphicObject basketball2 = GraphicObject(objBasketBall, 0.5f,
+                                             0.9f, 2.0f, 0.5f,
+                                             1.0f, 0.5f, 0.0f);
+
+    object_list.push_back(basketball2);
     return GraphicObject::animateObjects(object_list);
 
     // Para la pruba de las curvas de Bézier.

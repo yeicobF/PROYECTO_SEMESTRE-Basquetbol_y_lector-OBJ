@@ -104,8 +104,8 @@ arma::fmat GraphicObject::getObjectTransform(){
     // glClearColor(0.0,0.0,1.0,0.0); // Dark blue
     // glClearColor(1.0f, 0.0f, 1.0f, 0.0f); // Purple
     // glClearColor(0.0f, 1.0f, 1.0f, 1.0f); // Light Blue
-    // glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Color negro para que se vea la Luna.
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Color blanco.
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Color negro para que se vea la Luna.
+    // glClearColor(1.0f, 1.0f, 1.0f, 0.0f); // Color blanco.
     //Clear the screen to this color.
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -119,8 +119,8 @@ arma::fmat GraphicObject::getObjectTransform(){
     float ar = width / height;
 
     // //  Proyección en paralelo
-    // glViewport(0, 0, width, height);
-    // glOrtho(-ar, ar, -1.0, 1.0, -20.0, 20.0);
+    glViewport(0, 0, width, height);
+    glOrtho(-ar, ar, -1.0, 1.0, -20.0, 20.0);
 
     //  Proyección en perspectiva
     //glFrustum(-ar, ar, -ar, ar, 2.0, 4.0);
@@ -135,25 +135,25 @@ arma::fmat GraphicObject::getObjectTransform(){
     bool drawBall = true;
     do {
         // glClear( GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT );
-
-       float ratio;
-       int width, height;
-       glfwGetFramebufferSize(window, &width, &height);
-       ratio = width / float(height);
-       glViewport(0, 0, width, height);
-
-       glEnable(GL_DEPTH_TEST); //surface transparency
-       glDepthFunc(GL_LESS);
+       //
+       // float ratio;
+       // int width, height;
+       // glfwGetFramebufferSize(window, &width, &height);
+       // ratio = width / float(height);
+       // glViewport(0, 0, width, height);
+       //
+       // glEnable(GL_DEPTH_TEST); //surface transparency
+       // glDepthFunc(GL_LESS);
        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
        glMatrixMode(GL_PROJECTION);
-       glLoadIdentity();
-       glFrustum(-ratio, ratio, -ratio, ratio, 2.0f, 40.0f);
+       // glLoadIdentity();
+       // glFrustum(-ratio, ratio, -ratio, ratio, 2.0f, 40.0f);
 
        glMatrixMode(GL_MODELVIEW);
        glLoadIdentity();
 
        //display
-       glTranslated(0.0f, 0.0f, -4.0f);
+       // glTranslated(0.0f, 0.0f, -4.0f);
        glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f);
        gluLookAt(eye[0], eye[1], eye[2],
               camera[0], camera[1], camera[2],
@@ -162,7 +162,7 @@ arma::fmat GraphicObject::getObjectTransform(){
        // Para dibujar la prueba con Bézier.
 
        // object_list[0].drawBezier();
-       object_list[1].drawObject();
+       // object_list[1].drawObject();
        // object_list[0].drawObject();
        // drawEveryObject(object_list);
 
@@ -177,6 +177,15 @@ arma::fmat GraphicObject::getObjectTransform(){
                 drawBall = false;
             }
         }
+        else
+            if(object_list[1].drawBezier() == 1){
+                // Esperar a que presione enter.
+                // do{}while(glfwGetKey(window, GLFW_KEY_ENTER ) != GLFW_PRESS);
+                // object_list.push_back(object_list[count]);
+                // count++;
+                drawBall = true;
+                break;
+            }
         glfwSwapBuffers(window);
         glfwPollEvents();
 
