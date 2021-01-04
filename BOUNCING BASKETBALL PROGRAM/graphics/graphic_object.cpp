@@ -5,7 +5,7 @@
 // #include <armadillo>
 #include <iostream>
 #include <fstream>
-
+#include <random> // Para colores aleatorios.
 #include "graphic_object.hpp"
 
 using namespace std;
@@ -81,6 +81,13 @@ arma::fmat GraphicObject::getObjectTransform(){
     GraphicObject auxObject = object_list[0];
     // Para generar un balón desde la derecha.
     GraphicObject auxObject2 = object_list[1];
+
+    // Se asignan colores aleatorios para distinguir los balones.
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 gen(rd()); // seed the generator
+    // Los colres van del 0 al 1, por lo que será el rango.
+    std::uniform_int_distribution<> distr(0, 1); // define the range
+
     // object_list = _object_list;
     // Para la perspectiva en que vemos el sistema.
     // Con eye cambiamos la perspectiva desde la que nosotros lo vemos.
@@ -185,11 +192,16 @@ arma::fmat GraphicObject::getObjectTransform(){
         if(was_shift_pressed){
             // GraphicObject basketball = object_list[0];
             object_list.push_back(auxObject2);
+            // Generar 3 colores aleatorios (RGB) del 0 al 1.
+            object_list[ object_list.size() - 1 ].setColors(distr(gen), distr(gen), distr(gen));
+
             was_shift_pressed = false;
         }
         if(was_enter_pressed){
             // GraphicObject basketball = object_list[0];
             object_list.push_back(auxObject);
+            // Generar 3 colores aleatorios (RGB) del 0 al 1.
+            object_list[ object_list.size() - 1 ].setColors(distr(gen), distr(gen), distr(gen));
             was_enter_pressed = false;
         }
         // Dibujar TODOS LOS OBJETOS.
