@@ -1,5 +1,6 @@
 #include <iostream> // Aún necesitamos esta librería.
 #include <armadillo> // Para los fcolvec, frowvec, y demás.
+
 #include "vertex.hpp" //Incluimos la librería con la definición.
 
 using namespace std; //Ponerlo en cada archivo.

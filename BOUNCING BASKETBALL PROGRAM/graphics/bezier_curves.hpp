@@ -6,16 +6,12 @@
 
 /*
     CLASE EN LA QUE SE CALCULARÁN LAS CURVAS DE BÉZIER.
-    Se calculan 4 PUNTOS DE CONTROL.
-        1.- El inicio de la trayectoria.
-        2.- Un punto de control cualquiera.
-        3.- Un punto de control cualquiera.
-        4.- El final de la trayectoria.
 */
 
 class BezierCurves{
     private:
-        int numberOfBounces; // Número de saltos que dará la pelota.
+        // Número de saltos que dará la pelota.
+        int numberOfBounces;
         // Número del salto actual.
         int currentBounce;
         // Valores máximos para x y y del salto actual.
@@ -32,14 +28,21 @@ class BezierCurves{
         // Se debe guardar la Qt en un Vertex, y sacar sus coordenadas homogéneas.
         std::vector <arma::frowvec> Qt;
     public:
+        // Constructor vacío para no tener problemas al compilar.
         BezierCurves(){}
-        // No necesitaremos instanciar.
+        /* Necesitamos instanciar la clase (Podría haber sido un inicializador
+            de los valores como método estático) para irlos guardando como
+            progreso para el cálculo de cada rebote. */
         BezierCurves(float _initialX, float _initialY, float _initialSpeed,
                      float _speedAngle, int _numberOfBounces, float gravity,
                      float _yMax, float _dt);
+        // Método para SOLO CALCULAR (NO REGRESAR) los vértices de las curvas de
+        //  Bézier.
         void calculateVertices();
-        // Devuelve un arreglo con los n vértices.
+        // Devuelve un arreglo con los n vértices calculados con las curvas de
+        //  Bézier.
         std::vector <arma::frowvec> getVertices();
+        // Método para revisar si el rebote actual se trata del último.
         bool isLastBounce();
 };
 

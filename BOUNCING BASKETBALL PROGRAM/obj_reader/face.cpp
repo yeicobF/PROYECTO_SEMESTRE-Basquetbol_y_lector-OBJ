@@ -1,6 +1,5 @@
 #include "face.hpp"
 #include <iostream>
-//#include <vector>
 
 using namespace std;
 
@@ -25,7 +24,7 @@ vector <Edge> Face::getFaceEdges(){
 void Face::printFace(){
     cout << "\n -> NÚMERO de ARISTAS en esta cara: " << edge_list.size() << endl;
     for(int i = 0; i < edge_list.size(); i++){
-    	cout << "\n\t -> ARISTA: " << i+1 <<endl;
+    	cout << "\n\t -> ARISTA: " << i + 1 << endl;
     	edge_list[i].printEdge(); // Utilizando el método de clase Edge
 	}
 }

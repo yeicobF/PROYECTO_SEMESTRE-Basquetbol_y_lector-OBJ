@@ -1,11 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
+/* Siendo sincero, ya no sé cuáles bibliotecas utilicé y cuáles no, así que
+    mejor las dejaré así. De todas formas no creo que afecte tanto al
+    rendimiento, o eso espero.
+
+   Al final mejor sí quité las que no ocupaba.
+*/
+
 #include <GL/glu.h>
 #include <GLFW/glfw3.h>
-// #include <armadillo>
+// Para entrada y salida (tengo varias impresiones comentadas).
 #include <iostream>
-#include <fstream>
-#include <random> // Para colores aleatorios.
+// Para colores aleatorios.
+#include <random>
 // In order to call rand or srand you must #include <cstdlib>
 #include <cstdlib>
 // In order to call time, you must #include <ctime>

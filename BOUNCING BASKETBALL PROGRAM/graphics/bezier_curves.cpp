@@ -1,10 +1,6 @@
 #include <cmath> // Funciones matemáticas.
 
 #include "bezier_curves.hpp"
-#include "graphic_object.hpp"
-
-using namespace std;
-
 
 BezierCurves::BezierCurves(float _initialX, float _initialY, float _initialSpeed,
                             float _speedAngle, int _numberOfBounces, float gravity,
@@ -21,6 +17,7 @@ BezierCurves::BezierCurves(float _initialX, float _initialY, float _initialSpeed
 
     // Hay que calcular la X máxima de acuerdo a los parámetros.
     xMax = fabs((pow(initialSpeed, 2) * sin(2 * speedAngle)) / gravity + initialX);
+    // La Y máxima del rebote inicial es la Y máxima en general.
     currentBounceMaxY = yMax = _yMax;
     // Matriz de Bézier. Constante.
     MB = {{-1, 3, -3, 1},
@@ -32,20 +29,24 @@ BezierCurves::BezierCurves(float _initialX, float _initialY, float _initialSpeed
 // Método para obtener los vértices de las curvas de Bézier.
 void BezierCurves::calculateVertices(){
     // cout << "\n  - CURRENT BOUNCE: " << currentBounce << endl;
-    // Valores máximos para x y y del salto actual.
+    // Valor máximo para X en el salto actual.
     currentBounceMaxX =  (xMax / numberOfBounces * currentBounce);
     // Aumentar eñ número del rebote actual.
     currentBounce++;
-    // PUNTOS DE CONTROL.
+    // PUNTOS DE CONTROL -------------------------------------------------------
+
+    /* Se calculan 4 PUNTOS DE CONTROL:
+        1.- El inicio de la trayectoria.
+        2.- Un punto de control cualquiera.
+        3.- Un punto de control cualquiera.
+        4.- El final de la trayectoria.
+    */
     arma::frowvec P1 = {initialX, 0, 0};
-    // 1/4 de trayectoria el primer PC.
+    // Tuve problemas con los puntos de control. No los supe emplear del todo bien.
+    // Los balones avanzabann pero regresaban. Intenté arreglarlo de muchas
+    //  formas, pero al final mejor lo dejé así.
     arma::frowvec P2 = {(float)(currentBounceMaxX * 0.75), currentBounceMaxY, 0};
-    // 3/4 de trayectoria el primer PC.
     arma::frowvec P3 = {(float)(currentBounceMaxX * 0.75), currentBounceMaxY, 0};
-    // // 1/4 de trayectoria el primer PC.
-    // arma::frowvec P2 = {initialX / 4, yCurve[0], 0};
-    // // 3/4 de trayectoria el primer PC.
-    // arma::frowvec P3 = {initialX / 4 * 3, yCurve[1], 0};
     arma::frowvec P4 = {currentBounceMaxX, 0, 0};
 
     // La altura máxima de y irá disminuyendo respecto al número de rebotes.
@@ -73,7 +74,7 @@ void BezierCurves::calculateVertices(){
 }
 
 // Obtener el vector de vértices.
-vector <arma::frowvec> BezierCurves::getVertices(){
+std::vector <arma::frowvec> BezierCurves::getVertices(){
     return Qt;
 }
 
