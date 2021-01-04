@@ -212,7 +212,7 @@ void GraphicObject::drawBezierTest(){
         << bezierTestVertices[bezierTestIndex].getVertex()[1] << ", "
         << bezierTestVertices[bezierTestIndex].getVertex()[2] << endl;
 
-    transform = Transform::Translation(bezierTestVertices[bezierTestIndex].getVertex()[0],
+    transform =   Transform::Translation(bezierTestVertices[bezierTestIndex].getVertex()[0],
                                         bezierTestVertices[bezierTestIndex].getVertex()[1],
                                         bezierTestVertices[bezierTestIndex].getVertex()[2])
                 * Transform::Scale(size, size, size)
