@@ -12,7 +12,7 @@ class Transform
 
             To make your intention clear in this approach you can additionally use a private constructor. private: BitParser() {} This will prevent anyone from creating instances. – Danvil
         */
-        Transform();
+        Transform(){}
     // Todos los métodos estáticos porque no se necesita instanciar la clase. No se requiere como objeto.
     public:
         static arma::fmat Translation(float tx, float ty, float tz);

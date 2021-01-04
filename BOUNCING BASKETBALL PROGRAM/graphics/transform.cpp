@@ -3,8 +3,6 @@
 
 #define PI 3.14159265
 
-Transform::Transform() {}
-
 /*static*/ arma::fmat Transform::Translation(float tx, float ty, float tz) {
     return( arma::fmat( {{1.0f, 0.0f, 0.0f, tx},
                         {0.0f, 1.0f, 0.0f, ty},
@@ -21,6 +19,7 @@ Transform::Transform() {}
     );
 }
 
+/* Aquí solo se hace la rotación del último valor que se haya definido. */
 /*static*/ arma::fmat Transform::Rotation(float ax, float ay, float az, float angle) {
     float ang = angle * PI / 180.0f;
     arma::fmat Rot;

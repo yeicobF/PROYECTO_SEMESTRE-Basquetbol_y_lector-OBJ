@@ -5,6 +5,7 @@
    Al final mejor sí quité las que no ocupaba.
 */
 
+/* LIBERÍAS ESENCIALES PORQUE SON LAS DE LOS GRÁFICOS. */
 #include <GL/glu.h>
 #include <GLFW/glfw3.h>
 // Para entrada y salida (tengo varias impresiones comentadas).
@@ -305,7 +306,9 @@ int GraphicObject::drawBezier(){
         object_vertices.push_back(rv);
     }
 
-    
+    /* Se recorren los vértices transformados para ver cuál es el número máximo
+        de vértices por cara, para así determinar si se dibuja por triángulos
+        o por polígonos. */
     for ( unsigned int i = 0; i < object_vertices.size(); i++ )
         if(object_vertices[i].getVertex().size() > maxVertexInFaces)
             maxVertexInFaces = object_vertices[i].getVertex().size();
@@ -326,57 +329,15 @@ int GraphicObject::drawBezier(){
     }
     // Termina el dibujado.
     glEnd();
-    // Si ya se hicieron todos los rebotes, terminar.
+    // Si ya se hicieron todos los rebotes, terminar e indicarlo.
     if(bezier.isLastBounce())
         return 1;
     else
         return 0;
 }
 
-void GraphicObject::drawObject(){
-    angle = (angle < 360.0f) ? angle + speed : 0.0f;
-
-    vector <Vertex> p_vertices = objFileInfo.getFacesVertices();
-
-    vector <Vertex> object_vertices;
-    /* El número máximo de vértices para ver si se dibuja por triángulos
-        o por polígonos. */
-    int maxVertexInFaces = 0;
-    // El OBJ del balón de basket tiene 4 vértices por cara.
-    for ( unsigned int i=0; i<p_vertices.size(); i++ ) {
-        arma::fcolvec v = p_vertices[i].getHomogeneousCoordinates();
-        // // cout << "\n - V: " << v;
-        arma::fcolvec vp = getObjectTransform() * v;
-        // // cout << "\n - VP: " << vp;
-        Vertex rv = Vertex();
-        // // cout << "\n - rv: "; rv.printVertex();
-        rv.setVertex(arma::trans(vp));
-        object_vertices.push_back(rv);
-        // // cout << "\n - cbvertex: " << object_vertices;
-    }
-
-    for ( unsigned int i = 0; i < object_vertices.size(); i++ )
-        if(object_vertices[i].getVertex().size() > maxVertexInFaces)
-            maxVertexInFaces = object_vertices[i].getVertex().size();
-
-    glColor3f(colorR, colorG, colorB);
-
-    // Si hay menos o igual a 3 vértices, dibujar por triángulos.
-    if(maxVertexInFaces <= 3)
-        glBegin(GL_TRIANGLES);
-    // Si hay más de 3 vértices se dibuja por polígonos.
-    else
-        glBegin(GL_POLYGON);
-    // Aquí se dibujan los vértices de uno por uno.
-    for ( unsigned int i = 0; i < object_vertices.size(); i++ ) {
-        arma::frowvec vert = object_vertices[i].getVertex();
-        glVertex3f(vert[0], vert[1], vert[2]);
-    }
-    // Termina el dibujado.
-    glEnd();
-}
-
-/* En un ciclo dibuja a cada uno de los objetos. */
+/* En un ciclo dibuja a cada uno de los objetos.
+    - No lo utilicé porque el programa se quedaba trabado. */
 /* static */void GraphicObject::drawEveryObject(vector <GraphicObject> objects){
     for(unsigned int i = 0; i < objects.size(); i++)
         objects[i].drawObject();
@@ -404,53 +365,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     	eye = {0.0, 10.0, 0.0};
     	view_up = {0.0, 0.0, -1.0};
 	}
+    // Revisa si se presionó ENTER.
     if(key == GLFW_KEY_ENTER && action == GLFW_PRESS)
         was_enter_pressed = true;
+    // Revisa si se presionó BACKSPACE (RETROCESO).
     if(key == GLFW_KEY_BACKSPACE && action == GLFW_PRESS)
         was_backspace_pressed = true;
 }
-
-/*
-    R : to rotate the shape about y-axes
-    Right Arrow : move camera position in +ve X axes
-    Left Arrow : move camera position in -ve X axes
-    Up Arrow : move camera position in +ve Y axes
-    Down Arrow : move camera position in -ve Y axes
-    Space : returns camera  to original position.
-*/
-// static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-//     if (action == GLFW_PRESS) {
-//         switch (key) {
-//             case GLFW_KEY_ESCAPE:
-//                 glfwSetWindowShouldClose(window, GL_TRUE);
-//                 break;
-//
-//             case GLFW_KEY_UP: //up
-//                 eye[1] += 1;
-//                 break;
-//
-//             case GLFW_KEY_DOWN: //down
-//                 eye[1] -= 1;
-//                 break;
-//
-//             case GLFW_KEY_RIGHT: //right
-//                 eye[0] += 1;
-//                 break;
-//
-//             case GLFW_KEY_LEFT: // left
-//                 eye[0] -= 1;
-//                 break;
-//
-//             case GLFW_KEY_SPACE: //space
-//                     eye[0] = 0.0;
-//                     eye[1] = 0.0;
-//                     eye[2] = 10.0;
-//                 break;
-//
-//             case GLFW_KEY_R: //R
-//                 cameraAngle+=20;
-//                 break;
-//
-//         }
-//     }
-// }
