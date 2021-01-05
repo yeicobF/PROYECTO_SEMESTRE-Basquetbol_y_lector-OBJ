@@ -164,10 +164,13 @@ def generate_reference(args_list):
 def is_there_enough_args(args_list):
     # Si hay más o menos argumentos.
     if(len(args_list) != 6):
-        print("\n\nMenos argumentos de los necesarios.", end="\n")
-        print(" - Se recibieron [{}] argumentos.\n".format(len(args_list)))
+        print("\n\nNo se recibieron los argumentos necesarios (6).", end="\n")
+        if(len(args_list) == 1):
+            print(" - Se recibió 1 argumento:\n")
+        else:
+            print(" - Se recibieron [{}] argumentos:\n".format(len(args_list)))
         print(args_list)
-        print("\n - USO: {} <libro o web> <\"autor(es)\ separados por comas\"> <nombre página web o del libro> <dirección web completa> <Año>".format(args_list[0]), end="\n\n")
+        print("\n - USO: {} <\"libro\" o \"web\"> <\"autor(es)\ separados por comas\"> <nombre página web o del libro> <dirección web completa> <Año>".format(args_list[0]), end="\n\n")
         return False
     return True
 

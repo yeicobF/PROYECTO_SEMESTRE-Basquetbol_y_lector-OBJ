@@ -1,0 +1,103 @@
+- FECHA DE ENTREGA: Martes, 5 de enero del 2021
+
+Instrucciones
+
+Evaluación de Proyecto Final
+
+Graficación por Computadora
+
+
+
+LINEAMIENTOS DEL REPORTE
+
+El reporte final debe contener la información necesaria para que su proyecto lo pueda entender una persona que quisiera rehacerlo o extenderlo. El número de páginas varía, pero deberían ser alrededor de 15 páginas. Deberá tener los siguientes elementos:
+
+ 
+
+Escribir un reporte que contenga lo siguiente:
+
+Portada: Clave(s), nombre(s), materia, y nombre del profesor.
+
+Introducción: Donde se explica qué es el proyecto, para qué sirve y sus objetivos. (El objetivo de su proyecto NO es para pasar la materia, si no que se tienen que preguntar el por qué están haciendo ese proyecto en particular).
+
+-----------------------------------------------------------------------------
+Desarrollo: Esta sección es la más extensa y deberán subdividirla de acuerdo a su proyecto. Aquí deberán explicar detalladamente los pasos que siguieron para realizar su proyecto. En particular debe contener (no necesariamente en este orden):
+Explicación de cómo está estructurado el proyecto (estructuras de datos usadas).
+
+Explicación de todos las clases/funciones que componen su proyecto (diagrama de clases).
+
+Explicación rápida de OpenGL y su uso.
+
+Explicación específica de su proyecto en cuanto a su desarrollo (por ejemplo, aquellos que usaron tiro parabólico, velocidad, fricción, etc.)
+
+ -----------------------------------------------------------------------------
+
+Problemas/Experimentos: Al ir haciendo su proyecto debieron haber realizado varias pruebas. Indicar aquí que problemas tuvieron y cómo los resolvieron (o si no los resolvieron), y/o describir que experimentos realizaron para llegar a alguna solución.
+
+ 
+
+Conclusiones/Comentarios Finales: Es importante explicar las conclusiones a las que llegaron con el desarrollo de dicho proyecto.
+
+ 
+
+Referencias: Deben listar todas las referencias que usaron para la elaboración de su proyecto. Ejemplos de cómo deben referenciar:
+
+Página Web:
+
+Autor, “Nombre de la página”. Dirección Web completa, Año
+
+Ejemplo: R. Smith, “Open dynamics engine.” http://www.ode.org, 2007
+
+Libro:
+
+Autor(es), Nombre. Editorial, Año de Edición.
+
+Ejemplo: J. Findlay and I. Gilchrist, Active Vision. Oxford: Oxford Univ. Press, 2003
+
+ 
+
+Anexo - Manual del usuario: Este manual debe contener toda la información necesaria para que un usuario pueda instalar, y usar su proyecto. Ya que es posible que su proyecto pueda ser usado en una exhibición, entonces piensen en que este manual guiará a la persona que deberá usarlo para mostrarlo. Ya que la mayoría de los proyectos son tipo demos, este manual no será tan extenso.
+
+ 
+
+NOTAS del Reporte:
+
+¡Verificar la ortografía! (NO aceptaré ningún manual que tenga más de dos faltas de ortografía).
+
+La portada es en formato libre.
+
+ 
+
+ 
+
+LINEAMIENTOS DEL VIDEO
+
+ 
+
+En ocasiones ciertos proyectos no compilan o no ejecutan por cuestiones de la computadora en donde fueron hechos o por otras cuestiones. Por lo tanto se les pide que realicen un video con una explicación básica de su proyecto. El video deberá tener las siguientes características:
+
+ 
+
+Se puede grabar con celular, cámara, etc. siempre y cuando tenga buena resolución.
+
+La explicación se puede hacer hablada directamente en el video, y deberán explicar su funcionamiento general. No es necesario explicar cómo se compila o ejecuta.
+
+El video debe durar de 1 a 2 minutos.
+
+Es opcional la edición del video para añadirle portada, subtítulos, efectos, etc.
+
+El video no debe medir mas de 10 MB.
+
+ 
+
+ 
+
+ 
+
+ENTREGABLES
+
+
+
+Código fuente, ejecutable y archivos de modelos (así como otros archivos que sean necesarios para compilar el programa).
+Reporte en formato PDF (no en formato .DOC, ni tampoco impreso).
+Video que pueda reproducirse de preferencia en el reproductor VLC (si no en el Windows Media Player).
