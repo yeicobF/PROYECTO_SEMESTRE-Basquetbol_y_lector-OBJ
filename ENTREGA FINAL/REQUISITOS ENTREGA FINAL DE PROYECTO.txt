@@ -22,13 +22,14 @@ Introducción: Donde se explica qué es el proyecto, para qué sirve y sus objet
 
 -----------------------------------------------------------------------------
 Desarrollo: Esta sección es la más extensa y deberán subdividirla de acuerdo a su proyecto. Aquí deberán explicar detalladamente los pasos que siguieron para realizar su proyecto. En particular debe contener (no necesariamente en este orden):
-Explicación de cómo está estructurado el proyecto (estructuras de datos usadas).
 
-Explicación de todos las clases/funciones que componen su proyecto (diagrama de clases).
+- Explicación de cómo está estructurado el proyecto (estructuras de datos usadas).
 
-Explicación rápida de OpenGL y su uso.
+- Explicación de todos las clases/funciones que componen su proyecto (diagrama de clases).
 
-Explicación específica de su proyecto en cuanto a su desarrollo (por ejemplo, aquellos que usaron tiro parabólico, velocidad, fricción, etc.)
+- Explicación rápida de OpenGL y su uso.
+
+- Explicación específica de su proyecto en cuanto a su desarrollo (por ejemplo, aquellos que usaron tiro parabólico, velocidad, fricción, etc.)
 
  -----------------------------------------------------------------------------
 
