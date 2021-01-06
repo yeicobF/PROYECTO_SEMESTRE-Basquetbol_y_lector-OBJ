@@ -353,8 +353,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if(key == GLFW_KEY_I && action == GLFW_PRESS){
     	eye = {0.0, 0.0, -1.0};
 	}
-    // Al presionar D se ve desde abajo (o arriba, no estoy seguro).
-	if(key == GLFW_KEY_D && action == GLFW_PRESS){
+    // Al presionar U se ve desde ARRIBA.
+	if(key == GLFW_KEY_U && action == GLFW_PRESS){
     	eye = {0.0, 10.0, 0.0};
     	view_up = {0.0, 0.0, -1.0};
 	}
