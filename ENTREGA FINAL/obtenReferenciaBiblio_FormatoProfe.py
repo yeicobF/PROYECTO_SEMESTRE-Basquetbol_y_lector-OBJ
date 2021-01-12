@@ -170,7 +170,7 @@ def is_there_enough_args(args_list):
         else:
             print(" - Se recibieron [{}] argumentos:\n".format(len(args_list)))
         print(args_list)
-        print("\n - USO: {} <\"libro\" o \"web\"> <\"autor(es)\ separados por comas\"> <nombre página web o del libro> <dirección web completa> <Año>".format(args_list[0]), end="\n\n")
+        print("\n - USO: {} <\"libro\" o \"web\"> <\"autor(es)\ separados por comas\"> <nombre página web o del libro> <dirección web completa o editorial> <Año>".format(args_list[0]), end="\n\n")
         return False
     return True
 
